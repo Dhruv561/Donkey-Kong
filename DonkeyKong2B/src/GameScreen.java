@@ -35,7 +35,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 0; i < platformCoordinates.length; i++) {
             double x = Integer.parseInt(platformCoordinates[i].split(",")[0]);
             double y = Integer.parseInt(platformCoordinates[i].split(",")[1]);
-            platforms[i] = new Platform(x, y, GAME_PROPS, MESSAGE_PROPS);
+            platforms[i] = new Platform(x, y);
         }
     }
 
@@ -45,8 +45,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 1; i <= barrelCount; i++) {
             double x = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + i).split(",")[0]);
             double y = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + i).split(",")[1]);
-            barrels[i - 1] = new Barrel(x, y, GAME_PROPS, MESSAGE_PROPS);
-            //alignToPlatform(barrels[i - 1]);
+            barrels[i - 1] = new Barrel(x, y);
         }
     }
 
@@ -56,8 +55,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 1; i <= ladderCount; i++) {
             double x = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + i).split(",")[0]);
             double y = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + i).split(",")[1]);
-            ladders[i - 1] = new Ladder(x, y, GAME_PROPS, MESSAGE_PROPS);
-            //alignToPlatform(ladders[i - 1]);
+            ladders[i - 1] = new Ladder(x, y);
         }
     }
 
@@ -67,7 +65,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 1; i <= blasterCount; i++) {
             double x = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[0]);
             double y = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[1]);
-            blasters[i - 1] = new Blaster(x, y, GAME_PROPS, MESSAGE_PROPS);
+            blasters[i - 1] = new Blaster(x, y);
         }
     }
 
@@ -77,7 +75,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 1; i <= normalMonkeyCount; i++) {
             double x = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[0]);
             double y = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[1]);
-            normalMonkeys[i - 1] = new NormalMonkey(x, y, GAME_PROPS, MESSAGE_PROPS);
+            normalMonkeys[i - 1] = new NormalMonkey(x, y);
         }
 
         int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2."));
@@ -85,7 +83,7 @@ public abstract class GameScreen extends Screen {
         for (int i = 1; i <= intelligentMonkeyCount; i++) {
             double x = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[0]);
             double y = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[1]);
-            normalMonkeys[i - 1] = new IntelligentMonkey(x, y, GAME_PROPS, MESSAGE_PROPS);
+            normalMonkeys[i - 1] = new IntelligentMonkey(x, y);
         }
     }
 }

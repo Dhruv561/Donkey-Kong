@@ -1,3 +1,3 @@
 public interface Fallable {
-    public boolean fallToPlatform();
+    public void fallToPlatform(Platform[] platforms);
 }
