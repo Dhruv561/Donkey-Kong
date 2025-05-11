@@ -20,4 +20,9 @@ public class NormalMonkey extends Entity {
     public void moveRight() {
 
     }
+
+
+    public void update() {
+
+    }
 }

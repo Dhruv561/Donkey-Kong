@@ -1,6 +1,6 @@
 import bagel.*;
 
-public class IntelligentMonkey extends Entity {
+public class IntelligentMonkey extends Entity implements Attackable {
     private boolean isDestroyed = false;
     private int[] movementPattern;
     private final static double MOVEMENT_VELOCITY = 0.5;
@@ -19,6 +19,16 @@ public class IntelligentMonkey extends Entity {
 
     @Override
     public void moveRight() {
+
+    }
+
+    @Override
+    public void launchProjectile(GameObject projectile) {
+
+    }
+
+
+    public void update() {
 
     }
 }

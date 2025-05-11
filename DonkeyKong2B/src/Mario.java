@@ -1,6 +1,6 @@
 import bagel.*;
 
-public class Mario extends Entity {
+public class Mario extends Entity implements Attackable {
     private static final Image RIGHT_SPRITE = new Image("res/mario_right.png");
     private static final Image LEFT_SPRITE = new Image("res/mario_left.png");;
     private static final Image RIGHT_HAMMER_SPRITE = new Image("res/mario_hammer_right.png");
@@ -61,7 +61,8 @@ public class Mario extends Entity {
 
     }
 
-    public void launchProjectile() {
+    @Override
+    public void launchProjectile(GameObject projectile) {
 
     }
 
