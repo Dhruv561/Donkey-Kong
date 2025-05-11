@@ -17,10 +17,10 @@ public class Mario extends Entity {
     private static final double LADDER_VELOCITY = 2;
     private static final double JUMP_VELOCITY = 0;
     private static final double TERMINAL_VELOCITY = 10;
-    private static final double GRAVITY = 0.2;
+    private static final double MARIO_GRAVITY = 0.2;
 
     public Mario(double centreX, double centreY) {
-        super(centreX, centreY, RIGHT_SPRITE, LEFT_SPRITE, GRAVITY, TERMINAL_VELOCITY);
+        super(centreX, centreY, RIGHT_SPRITE, LEFT_SPRITE, MARIO_GRAVITY, TERMINAL_VELOCITY);
     }
 
     public void setActiveSprite() {

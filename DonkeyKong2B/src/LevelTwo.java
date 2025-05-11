@@ -22,8 +22,8 @@ public class LevelTwo extends GameScreen {
         createPlatforms(LEVEL);
         createBarrels(LEVEL);
         createLadders(LEVEL);
-        createBlasters();
-        createMonkeys();
+//        createBlasters();
+//        createMonkeys();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LevelTwo extends GameScreen {
     }
 
     @Override
-    public void update() {
+    public void update(Input input) {
 
     }
 }

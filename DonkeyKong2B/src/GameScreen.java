@@ -1,3 +1,5 @@
+import bagel.Input;
+
 import java.util.Properties;
 
 public abstract class GameScreen extends Screen {
@@ -7,9 +9,9 @@ public abstract class GameScreen extends Screen {
     protected Platform[] platforms;
     protected Barrel[] barrels;
     protected Ladder[] ladders;
-    protected NormalMonkey[] normalMonkeys;
-    protected IntelligentMonkey[] intelligentMonkeys;
-    protected Blaster[] blasters;
+//    protected NormalMonkey[] normalMonkeys;
+//    protected IntelligentMonkey[] intelligentMonkeys;
+//    protected Blaster[] blasters;
 
     boolean gameOver = false;
     boolean gameWon = false;
@@ -24,7 +26,7 @@ public abstract class GameScreen extends Screen {
         super(gameProps, messageProps);
     }
 
-    public abstract void update();
+    public abstract void update(Input input);
 
     public abstract void loadLevel();
 
@@ -43,8 +45,8 @@ public abstract class GameScreen extends Screen {
         int barrelCount = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + ".count"));
         barrels = new Barrel[barrelCount];
         for (int i = 1; i <= barrelCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + i).split(",")[1]);
+            double x = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + "." + i).split(",")[0]);
+            double y = Integer.parseInt(GAME_PROPS.getProperty("barrel.level" + level + "." + i).split(",")[1]);
             barrels[i - 1] = new Barrel(x, y);
         }
     }
@@ -53,37 +55,37 @@ public abstract class GameScreen extends Screen {
         int ladderCount = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + ".count"));
         ladders = new Ladder[ladderCount];
         for (int i = 1; i <= ladderCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + i).split(",")[1]);
+            double x = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + "." + i).split(",")[0]);
+            double y = Integer.parseInt(GAME_PROPS.getProperty("ladder.level" + level + "." + i).split(",")[1]);
             ladders[i - 1] = new Ladder(x, y);
         }
     }
 
-    public void createBlasters() {
-        int blasterCount = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2.count"));
-        blasters = new Blaster[blasterCount];
-        for (int i = 1; i <= blasterCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[1]);
-            blasters[i - 1] = new Blaster(x, y);
-        }
-    }
-
-    public void createMonkeys() {
-        int normalMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2.count"));
-        normalMonkeys = new NormalMonkey[normalMonkeyCount];
-        for (int i = 1; i <= normalMonkeyCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[1]);
-            normalMonkeys[i - 1] = new NormalMonkey(x, y);
-        }
-
-        int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2."));
-        intelligentMonkeysMonkeys = new IntelligentMonkey[intelligentMonkeyCount];
-        for (int i = 1; i <= intelligentMonkeyCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[1]);
-            normalMonkeys[i - 1] = new IntelligentMonkey(x, y);
-        }
-    }
+//    public void createBlasters() {
+//        int blasterCount = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2.count"));
+//        blasters = new Blaster[blasterCount];
+//        for (int i = 1; i <= blasterCount; i++) {
+//            double x = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[0]);
+//            double y = Integer.parseInt(GAME_PROPS.getProperty("blaster.level2." + i).split(",")[1]);
+//            blasters[i - 1] = new Blaster(x, y);
+//        }
+//    }
+//
+//    public void createMonkeys() {
+//        int normalMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2.count"));
+//        normalMonkeys = new NormalMonkey[normalMonkeyCount];
+//        for (int i = 1; i <= normalMonkeyCount; i++) {
+//            double x = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[0]);
+//            double y = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[1]);
+//            normalMonkeys[i - 1] = new NormalMonkey(x, y);
+//        }
+//
+//        int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2."));
+//        intelligentMonkeysMonkeys = new IntelligentMonkey[intelligentMonkeyCount];
+//        for (int i = 1; i <= intelligentMonkeyCount; i++) {
+//            double x = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[0]);
+//            double y = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[1]);
+//            normalMonkeys[i - 1] = new IntelligentMonkey(x, y);
+//        }
+//    }
 }

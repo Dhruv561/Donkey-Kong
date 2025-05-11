@@ -30,7 +30,7 @@ public class LevelOne extends GameScreen {
     }
 
     @Override
-    public void update() {
+    public void update(Input input) {
 
     }
 }
