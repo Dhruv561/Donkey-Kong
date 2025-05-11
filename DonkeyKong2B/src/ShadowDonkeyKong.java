@@ -13,8 +13,8 @@ public class ShadowDonkeyKong extends AbstractGame {
     private final Properties MESSAGE_PROPS;
     private final StartScreen START_SCREEN;
     private EndScreen endScreen;
-//    private LevelOne levelOne;
-//    private LevelTwo levelTwo;
+    private LevelOne levelOne;
+    private LevelTwo levelTwo;
 
     private boolean gameStarted = false;
     private boolean gameOver = false;
@@ -27,7 +27,8 @@ public class ShadowDonkeyKong extends AbstractGame {
         this.GAME_PROPS = gameProps;
         this.MESSAGE_PROPS = messageProps;
         this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
-//        this.gameScreen = new GameScreen(GAME_PROPS, MESSAGE_PROPS);
+        this.levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
+        this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
     }
 
     public Properties getGameProps() {

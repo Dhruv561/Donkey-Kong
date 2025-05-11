@@ -23,4 +23,9 @@ public class LevelOne extends GameScreen {
     public void display() {
 
     }
+
+    @Override
+    public void update() {
+
+    }
 }

@@ -25,4 +25,9 @@ public class LevelTwo extends GameScreen {
     public void display() {
 
     }
+
+    @Override
+    public void update() {
+
+    }
 }

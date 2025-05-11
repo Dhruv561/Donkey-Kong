@@ -24,6 +24,8 @@ public abstract class GameScreen extends Screen {
         super(gameProps, messageProps);
     }
 
+    public abstract void update();
+
     public abstract void loadLevel();
 
     public void createPlatforms(int level) {
