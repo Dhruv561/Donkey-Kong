@@ -15,6 +15,8 @@ public class ShadowDonkeyKong extends AbstractGame {
     private EndScreen endScreen;
     private LevelOne levelOne;
     private LevelTwo levelTwo;
+    private static double screenWidth;
+    private static double screenHeight;
 
     private boolean gameStarted = false;
     private boolean gameOver = false;
@@ -29,6 +31,8 @@ public class ShadowDonkeyKong extends AbstractGame {
         this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
         this.levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
         this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
+        this.screenWidth = Integer.parseInt(gameProps.getProperty("window.width"));
+        this.screenHeight = Integer.parseInt(gameProps.getProperty("window.height"));
     }
 
     public Properties getGameProps() {
@@ -80,6 +84,24 @@ public class ShadowDonkeyKong extends AbstractGame {
 //                gameScreen = new GameScreen(GAME_PROPS, MESSAGE_PROPS);
 //            }
 //        }
+    }
+
+    /**
+     * Retrieves the width of the game screen.
+     *
+     * @return The width of the screen in pixels.
+     */
+    public static double getScreenWidth() {
+        return screenWidth;
+    }
+
+    /**
+     * Retrieves the height of the game screen.
+     *
+     * @return The height of the screen in pixels.
+     */
+    public static double getScreenHeight() {
+        return screenHeight;
     }
 
     /**
