@@ -11,9 +11,14 @@ public class LevelTwo extends GameScreen {
 
     @Override
     public void loadLevel() {
-        this.mario = new Mario();
-        this.hammer = new Hammer();
-        this.donkeyKong = new DonkeyKong();
+        this.mario = new Mario(Integer.parseInt(GAME_PROPS.getProperty("mario.level2").split(",")[0]),
+                               Integer.parseInt(GAME_PROPS.getProperty("mario.level2").split(",")[1]));
+
+        this.hammer = new Hammer(Integer.parseInt(GAME_PROPS.getProperty("hammer.level2.1").split(",")[0]),
+                                 Integer.parseInt(GAME_PROPS.getProperty("hammer.level2.1").split(",")[1]));
+
+        this.donkeyKong = new DonkeyKong(Integer.parseInt(GAME_PROPS.getProperty("donkey.level2").split(",")[0]),
+                                         Integer.parseInt(GAME_PROPS.getProperty("donkey.level2").split(",")[1]));
         createPlatforms(LEVEL);
         createBarrels(LEVEL);
         createLadders(LEVEL);

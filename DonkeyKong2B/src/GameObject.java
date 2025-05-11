@@ -9,7 +9,7 @@ public abstract class GameObject implements Collidable, Fallable {
     private final double TERMINAL_VELOCITY;
     private final double GRAVITY;
 
-    public GameObject(double centreX, double centreY, Image sprite, double terminalVelocity, double gravity) {
+    public GameObject(double centreX, double centreY, Image sprite, double gravity, double terminalVelocity) {
         this.centreX = centreX;
         this.centreY = centreY;
         this.width = sprite.getWidth();
