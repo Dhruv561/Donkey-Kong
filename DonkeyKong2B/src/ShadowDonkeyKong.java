@@ -3,27 +3,40 @@ import java.util.Properties;
 
 /**
  * The main class for the Shadow Donkey Kong game.
- * This class extends {@code AbstractGame} and is responsible for managing game initialization,
- * updates, rendering, and handling user input.
- *
- * It sets up the game world, initializes characters, platforms, ladders, and other game objects,
- * and runs the game loop to ensure smooth gameplay.
+ * This class extends {@code AbstractGame} and is responsible for managing game
+ * states and switching between start, game and end screens.
  */
 public class ShadowDonkeyKong extends AbstractGame {
 
+
     private final Properties GAME_PROPS;
     private final Properties MESSAGE_PROPS;
+    private final StartScreen START_SCREEN;
+    private EndScreen endScreen;
+//    private LevelOne levelOne;
+//    private LevelTwo levelTwo;
 
+    private boolean gameStarted = false;
+    private boolean gameOver = false;
+    private int points = 0;
 
     public ShadowDonkeyKong(Properties gameProps, Properties messageProps) {
         super(Integer.parseInt(gameProps.getProperty("window.width")),
                 Integer.parseInt(gameProps.getProperty("window.height")),
                 messageProps.getProperty("home.title"));
-
         this.GAME_PROPS = gameProps;
         this.MESSAGE_PROPS = messageProps;
+        this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
+//        this.gameScreen = new GameScreen(GAME_PROPS, MESSAGE_PROPS);
     }
 
+    public Properties getGameProps() {
+        return this.GAME_PROPS;
+    }
+
+    public Properties getMessageProps() {
+        return this.MESSAGE_PROPS;
+    }
 
     /**
      * Render the relevant screen based on the keyboard input given by the user and the status of the gameplay.
@@ -31,26 +44,53 @@ public class ShadowDonkeyKong extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
+        // quit game if escape is pressed
         if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
         }
+        // show start screen if game hasn't started
+        if (!gameStarted && !gameOver) {
+            START_SCREEN.display();
+            // start the game if enter is pressed
+            if (!gameStarted && input.wasPressed(Keys.ENTER)) {
+                gameStarted = true;
+            }
+        }
+        // show game screen where main gameplay occurs
+//        if (gameStarted && !gameOver) {
+//            gameScreen.display();
+//            // update game screen with movement rendering
+//            gameScreen.update(input);
+//
+//            // game is over
+//            if (gameScreen.getGameStatus()) {
+//                gameOver = true;
+//                gameStarted = false;
+//            }
+//        }
+//
+//        if (gameOver) {
+//            // display end screen
+//            endScreen = new EndScreen(gameScreen.isGameWon(), gameScreen.getPoints(), GAME_PROPS, MESSAGE_PROPS);
+//            endScreen.display();
+//            if (input.wasPressed(Keys.SPACE)) {
+//                // restart game and go to start screen
+//                gameOver = false;
+//                gameScreen = new GameScreen(GAME_PROPS, MESSAGE_PROPS);
+//            }
+//        }
     }
-
 
     /**
      * The main entry point of the Shadow Donkey Kong game.
-     *
      * This method loads the game properties and message files, initializes the game,
      * and starts the game loop.
-     *
      * @param args Command-line arguments (not used in this game).
      */
     public static void main(String[] args) {
         Properties gameProps = IOUtils.readPropertiesFile("res/app.properties");
-        Properties messageProps = IOUtils.readPropertiesFile("res/message_en.properties");
+        Properties messageProps = IOUtils.readPropertiesFile("res/message.properties");
         ShadowDonkeyKong game = new ShadowDonkeyKong(gameProps, messageProps);
         game.run();
     }
-
-
 }
