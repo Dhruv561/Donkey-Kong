@@ -13,7 +13,7 @@ public class Hammer extends GameObject {
     @Override
     public void display() {
         if (!isDestroyed) {
-            display();
+           getSprite().draw(getCentreX(), getCentreY());
         }
     }
 }

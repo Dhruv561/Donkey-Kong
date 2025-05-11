@@ -12,6 +12,19 @@ public abstract class Entity extends GameObject implements Movable {
         this.LEFT_SPRITE = leftImage;
     }
 
+    public boolean isRight() {
+        return isRight;
+    }
+
+    public void setRight(boolean right) {
+        isRight = right;
+        if (isRight) {
+            setSprite(RIGHT_SPRITE);
+        } else {
+            setSprite(LEFT_SPRITE);
+        }
+    }
+
     public abstract void moveLeft();
     public abstract void moveRight();
     public void enforceBoundaries() {
@@ -26,15 +39,6 @@ public abstract class Entity extends GameObject implements Movable {
         }
         if (getBottomY() > ShadowDonkeyKong.getScreenHeight()) {
             setCentreY(ShadowDonkeyKong.getScreenHeight() - getHeight() / 2);
-        }
-    }
-
-    @Override
-    public void display() {
-        if (isRight) {
-            RIGHT_SPRITE.draw(getCentreX(), getCentreY());
-        } else {
-            LEFT_SPRITE.draw(getCentreX(), getCentreY());
         }
     }
 }

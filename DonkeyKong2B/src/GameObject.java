@@ -4,7 +4,7 @@ import bagel.util.*;
 public abstract class GameObject implements Collidable, Fallable {
     private double centreX, centreY;
     private double height, width;
-    private final Image SPRITE;
+    private Image sprite;
     private double velocityY = 0;
     private final double TERMINAL_VELOCITY;
     private final double GRAVITY;
@@ -14,7 +14,7 @@ public abstract class GameObject implements Collidable, Fallable {
         this.centreY = centreY;
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
-        this.SPRITE = sprite;
+        this.sprite = sprite;
         this.TERMINAL_VELOCITY = terminalVelocity;
         this.GRAVITY = gravity;
     }
@@ -67,12 +67,22 @@ public abstract class GameObject implements Collidable, Fallable {
         return this.centreY + (this.height / 2);
     }
 
+    public Image getSprite() {
+        return this.sprite;
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
+        this.width = this.sprite.getWidth();
+        this.height = this.sprite.getHeight();
+    }
+
     public Rectangle getBoundingBox() {
-        return SPRITE.getBoundingBoxAt(new Point(centreX, centreY));
+        return sprite.getBoundingBoxAt(new Point(centreX, centreY));
     }
 
     public void display() {
-        SPRITE.draw(centreX, centreY);
+        sprite.draw(centreX, centreY);
     }
 
     public boolean isTouching(GameObject object) {
