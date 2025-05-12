@@ -219,7 +219,7 @@ public class Mario extends Entity implements Attackable {
         display();
     }
 
-    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster) {
+    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys) {
         moveHorizontal(input);
         touchingHammer(hammer);
         touchingBlaster(blaster);
@@ -227,7 +227,7 @@ public class Mario extends Entity implements Attackable {
 
         for (Bullet bullet : bullets) {
             if (!bullet.isDestroyed()) {
-                bullet.update();
+                bullet.update(normalMonkeys, intelligentMonkeys);
             }
         }
 

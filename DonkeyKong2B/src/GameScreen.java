@@ -79,21 +79,54 @@ public abstract class GameScreen extends Screen {
         }
     }
 
-    public void createMonkeys() {
+    private void createNormalMonkeys() {
         int normalMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2.count"));
         normalMonkeys = new NormalMonkey[normalMonkeyCount];
         for (int i = 1; i <= normalMonkeyCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2." + i).split(",")[1]);
-            normalMonkeys[i - 1] = new NormalMonkey(x, y);
-        }
+            String data = GAME_PROPS.getProperty("normalMonkey.level2." + i);
+            String[] splitData = data.split(";");
 
-        int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2."));
+            String[] coordinates = splitData[0].split(",");
+            double x = Double.parseDouble(coordinates[0]);
+            double y = Double.parseDouble(coordinates[1]);
+
+            boolean isRight = "right".equals(splitData[1]);
+
+            String[] movementString = splitData[2].split(",");
+            int[] movementPattern = new int[movementString.length];
+            for (int j = 0; j < movementString.length; j++) {
+                movementPattern[j] = Integer.parseInt(movementString[j]);
+            }
+
+            normalMonkeys[i - 1] = new NormalMonkey(x, y, isRight, movementPattern);
+        }
+    }
+
+    private void createIntelligentMonkeys() {
+        int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2.count"));
         intelligentMonkeys = new IntelligentMonkey[intelligentMonkeyCount];
         for (int i = 1; i <= intelligentMonkeyCount; i++) {
-            double x = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[0]);
-            double y = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2." + i).split(",")[1]);
-            intelligentMonkeys[i - 1] = new IntelligentMonkey(x, y);
+            String data = GAME_PROPS.getProperty("intelligentMonkey.level2." + i);
+            String[] splitData = data.split(";");
+
+            String[] coordinates = splitData[0].split(",");
+            double x = Double.parseDouble(coordinates[0]);
+            double y = Double.parseDouble(coordinates[1]);
+
+            boolean isRight = "right".equals(splitData[1]);
+
+            String[] movementString = splitData[2].split(",");
+            int[] movementPattern = new int[movementString.length];
+            for (int j = 0; j < movementString.length; j++) {
+                movementPattern[j] = Integer.parseInt(movementString[j]);
+            }
+
+            intelligentMonkeys[i - 1] = new IntelligentMonkey(x, y, isRight, movementPattern);
         }
+    }
+
+    public void createMonkeys() {
+        createNormalMonkeys();
+        createIntelligentMonkeys();
     }
 }

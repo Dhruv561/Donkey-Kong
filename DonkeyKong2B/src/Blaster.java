@@ -14,14 +14,13 @@ public class Blaster extends GameObject implements Collectable {
     public void display() {
         if (!isCollected) {
             getSprite().draw(getCentreX(), getCentreY());
-        } else {
-            setCentreX(offscreenCoord);
-            setCentreY(offscreenCoord);
         }
     }
 
     @Override
     public void collect() {
         this.isCollected = true;
+        setCentreX(offscreenCoord);
+        setCentreY(offscreenCoord);
     }
 }

@@ -82,6 +82,15 @@ public class ShadowDonkeyKong extends AbstractGame {
 
         if (gameStarted && !gameOver && levelOneComplete && !levelTwoComplete) {
             levelTwo.update(input);
+
+            // game is over
+            if (levelTwo.gameOver()) {
+                if (levelTwo.gameWon()) {
+                    levelTwoComplete = true;
+                } else {
+                    gameOver = true;
+                }
+            }
         }
 
         if (gameOver) {

@@ -23,12 +23,29 @@ public class LevelTwo extends GameScreen {
         createBarrels(LEVEL);
         createLadders(LEVEL);
         createBlasters();
-        //createMonkeys();
+        createMonkeys();
     }
 
     @Override
-    public void display() {
+    public void display() {}
 
+    private void isGameOver() {
+        if (mario.isTouching(donkeyKong)) {
+            gameWon = mario.hasHammer();
+            gameOver = true;
+        }
+
+        for (Barrel barrel : barrels) {
+            if (mario.isTouching(barrel)) {
+                if (mario.hasHammer()) {
+                    //increase points
+                    barrel.destroy();
+                } else {
+                    gameWon = false;
+                    gameOver = true;
+                }
+            }
+        }
     }
 
     @Override
@@ -50,9 +67,18 @@ public class LevelTwo extends GameScreen {
             blaster.display();
         }
 
-        mario.update(input, platforms, ladders, hammer, blasters);
+        for (NormalMonkey monkey : normalMonkeys) {
+            monkey.update(platforms);
+        }
+
+        for (IntelligentMonkey monkey : intelligentMonkeys) {
+            monkey.update(platforms);
+        }
+
+        mario.update(input, platforms, ladders, hammer, blasters, normalMonkeys, intelligentMonkeys);
         donkeyKong.update(platforms);
         hammer.display();
-        //isGameOver();
+
+        isGameOver();
     }
 }

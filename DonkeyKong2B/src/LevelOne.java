@@ -27,7 +27,7 @@ public class LevelOne extends GameScreen {
     @Override
     public void display() {}
 
-    public void isGameOver() {
+    private void isGameOver() {
         if (mario.isTouching(donkeyKong)) {
             gameWon = mario.hasHammer();
             gameOver = true;

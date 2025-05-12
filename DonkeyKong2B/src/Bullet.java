@@ -8,6 +8,7 @@ public class Bullet extends GameObject {
     private final static int BULLET_GRAVITY = 0;
     private final static int BULLET_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 3.8;
+    private final static int offscreen = -100;
 
     public Bullet(double centreX, double centreY, boolean isRight) {
         super(centreX, centreY, isRight ? RIGHT_SPRITE : LEFT_SPRITE, BULLET_GRAVITY, BULLET_TERMINAL_VELOCITY);
@@ -18,6 +19,12 @@ public class Bullet extends GameObject {
         return this.isDestroyed;
     }
 
+    private void destroy() {
+        this.isDestroyed = true;
+        setCentreY(offscreen);
+        setCentreX(offscreen);
+    }
+
     @Override
     public void display() {
         if (!isDestroyed) {
@@ -25,7 +32,23 @@ public class Bullet extends GameObject {
         }
     }
 
-    public void update() {
+    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys) {
+        for (NormalMonkey monkey : normalMonkeys) {
+            if (isTouching(monkey)) {
+                monkey.destroy();
+                destroy();
+            }
+        }
+
+        for (IntelligentMonkey monkey : intelligentMonkeys) {
+            if (isTouching(monkey)) {
+                monkey.destroy();
+                destroy();
+            }
+        }
+    }
+
+    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys) {
         if (isRight) {
             setCentreX(getCentreX() + MOVEMENT_VELOCITY);
         } else {
@@ -34,6 +57,7 @@ public class Bullet extends GameObject {
         if (getCentreX() >= ShadowDonkeyKong.getScreenWidth() || getCentreX() <= 0) {
             isDestroyed = true;
         }
+        monkeyCollision(normalMonkeys, intelligentMonkeys);
         display();
     }
 }
