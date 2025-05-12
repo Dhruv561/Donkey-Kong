@@ -63,12 +63,12 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         // show game screen where main gameplay occurs
         if (gameStarted && !gameOver) {
-            levelOne.display();
+            //levelOne.display();
             // update game screen with movement rendering
             levelOne.update(input);
 
             // game is over
-            if (true) {
+            if (false) {
                 gameOver = true;
                 gameStarted = false;
             }

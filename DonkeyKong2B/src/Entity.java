@@ -25,8 +25,8 @@ public abstract class Entity extends GameObject implements Movable {
         }
     }
 
-    public abstract void moveLeft();
-    public abstract void moveRight();
+    public abstract void moveHorizontal();
+
     public void enforceBoundaries() {
         if (getLeftX() < 0) {
             setCentreX(getWidth() / 2);

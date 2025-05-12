@@ -12,12 +12,7 @@ public class NormalMonkey extends Entity {
     }
 
     @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
+    public void moveHorizontal() {
 
     }
 

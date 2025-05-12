@@ -77,6 +77,14 @@ public abstract class GameObject implements Collidable, Fallable {
         this.height = this.sprite.getHeight();
     }
 
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public double getVelocityY() {
+        return this.velocityY;
+    }
+
     public Rectangle getBoundingBox() {
         return sprite.getBoundingBoxAt(new Point(centreX, centreY));
     }

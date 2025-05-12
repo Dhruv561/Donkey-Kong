@@ -15,4 +15,9 @@ public class Barrel extends GameObject {
             getSprite().draw(getCentreX(), getCentreY());
         }
     }
+
+    public void update(Platform[] platforms) {
+        fallToPlatform(platforms);
+        display();
+    }
 }

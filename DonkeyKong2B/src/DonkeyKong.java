@@ -1,6 +1,7 @@
 import bagel.*;
 
 public class DonkeyKong extends Entity {
+    private int health = 5;
     private final static double GRAVITY = 0.4;
     private final static double DONKEY_TERMINAL_VELOCITY = 5;
 
@@ -9,12 +10,10 @@ public class DonkeyKong extends Entity {
     }
 
     @Override
-    public void moveLeft() {
+    public void moveHorizontal() {}
 
-    }
-
-    @Override
-    public void moveRight() {
-
+    public void update(Platform[] platforms) {
+        fallToPlatform(platforms);
+        display();
     }
 }

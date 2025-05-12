@@ -12,13 +12,9 @@ public class IntelligentMonkey extends Entity implements Attackable {
         super(centreX, centreY, new Image("res/intelli_monkey_right.png"), new Image("res/intelli_monkey_left.png"), INTELLIGENT_GRAVITY, INTELLIGENT_TERMINAL_VELOCITY);
     }
 
-    @Override
-    public void moveLeft() {
-
-    }
 
     @Override
-    public void moveRight() {
+    public void moveHorizontal() {
 
     }
 

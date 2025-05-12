@@ -22,8 +22,8 @@ public class LevelTwo extends GameScreen {
         createPlatforms(LEVEL);
         createBarrels(LEVEL);
         createLadders(LEVEL);
-//        createBlasters();
-//        createMonkeys();
+        createBlasters();
+        createMonkeys();
     }
 
     @Override

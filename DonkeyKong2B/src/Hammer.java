@@ -10,6 +10,10 @@ public class Hammer extends GameObject {
         super(centreX, centreY, new Image("res/hammer.png") , GRAVITY, HAMMER_TERMINAL_VELOCITY);
     }
 
+    public void isCollected(boolean collected) {
+        this.isCollected = collected;
+    }
+
     @Override
     public void display() {
         if (!isCollected) {

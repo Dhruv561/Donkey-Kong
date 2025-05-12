@@ -31,6 +31,22 @@ public class LevelOne extends GameScreen {
 
     @Override
     public void update(Input input) {
+        drawBackground();
+        for (Platform platform : platforms) {
+            platform.display();
+        }
+
+        for (Barrel barrel: barrels) {
+            barrel.update(platforms);
+        }
+
+        for (Ladder ladder: ladders) {
+            ladder.display();
+        }
+
+        mario.update(input, platforms, ladders, hammer);
+        donkeyKong.update(platforms);
+        hammer.display();
 
     }
 }
