@@ -73,8 +73,8 @@ public abstract class GameObject implements Collidable, Fallable {
 
     public void setSprite(Image sprite) {
         this.sprite = sprite;
-        this.width = this.sprite.getWidth();
-        this.height = this.sprite.getHeight();
+        this.width = sprite.getWidth();
+        this.height = sprite.getHeight();
     }
 
     public void setVelocityY(double velocityY) {

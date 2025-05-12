@@ -25,20 +25,26 @@ public class Mario extends Entity implements Attackable {
         super(centreX, centreY, LEFT_SPRITE, RIGHT_SPRITE, MARIO_GRAVITY, MARIO_TERMINAL_VELOCITY);
     }
 
-    public void setActiveSprite() {
-        if (isRight() && !hasHammer && !hasBlaster) {
-            setSprite(RIGHT_SPRITE);
-        } else if (!isRight() && !hasHammer && !hasBlaster) {
-            setSprite(LEFT_SPRITE);
-        } else if (isRight() && hasHammer && !hasBlaster) {
-            setSprite(RIGHT_HAMMER_SPRITE);
-        } else if (!isRight() && hasHammer && !hasBlaster) {
-            setSprite(LEFT_HAMMER_SPRITE);
-        } else if (isRight() && !hasHammer && hasBlaster) {
-            setSprite(RIGHT_BLASTER_SPRITE);
+    private void updateSprite() {
+        // 1) Remember the old image and its bottom
+        double oldBottom = getBottomY();
+
+        // 2) Assign the new image based on direction facing, hammer and blaster
+        if (hasHammer) {
+            setSprite(isRight() ? RIGHT_HAMMER_SPRITE : LEFT_HAMMER_SPRITE);
+        } else if (hasBlaster) {
+            setSprite(isRight() ? RIGHT_BLASTER_SPRITE : LEFT_BLASTER_SPRITE);
         } else {
-            setSprite(LEFT_BLASTER_SPRITE);
+            setSprite(isRight() ? RIGHT_SPRITE : LEFT_SPRITE);
         }
+
+        // 4) Shift 'y' so the bottom edge is the same as before
+        //    (If new sprite is taller, we move Mario up so he doesn't sink into platforms)
+        setCentreY(getCentreY() - (getBottomY() - oldBottom));
+
+        // 5) Update the recorded width/height to match the new image
+        setWidth(getSprite().getWidth());
+        setHeight(getHeight());
     }
 
     public void touchingHammer(Hammer hammer) {
@@ -55,9 +61,11 @@ public class Mario extends Entity implements Attackable {
         if (input.isDown(Keys.LEFT)) {
             setCentreX(getCentreX() - MOVE_VELOCITY);
             setRight(false);
+            updateSprite();
         } else if (input.isDown(Keys.RIGHT)) {
             setCentreX(getCentreX() + MOVE_VELOCITY);
             setRight(true);
+            updateSprite();
         }
     }
 
@@ -160,57 +168,34 @@ public class Mario extends Entity implements Attackable {
 
     }
 
-//    @Override
-//    public void display() {
-//        if (isRight() && !hasHammer) {
-//            // facing right and has no hammer
-//            RIGHT_SPRITE.draw(getCentreX(), getCentreY());
-//        } else if (isRight() && hasHammer) {
-//            // facing right and has hammer
-//            RIGHT_HAMMER_SPRITE.draw(getCentreX(), getCentreY());
-//        } else if (!isRight() && !hasHammer) {
-//            // left right and has no hammer
-//            LEFT_SPRITE.draw(getCentreX(), getCentreY());
-//        } else {
-//            // facing left and has hammer
-//            LEFT_HAMMER_SPRITE.draw(getCentreX(), getCentreY());
-//        }
-//    }
-
     public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
-        moveHorizontal(input); // 1) Horizontal movement
-        //updateSprite(hammer); // 2) Update Mario’s current sprite (hammer or not, facing left or right)
-        touchingHammer(hammer); // 3) If you just picked up the hammer:
-        //updateSprite(); // 4) Now replace sprite (since either isFacingRight or hasHammer could have changed)
+        moveHorizontal(input);
+        touchingHammer(hammer);
 
-        // 5) Ladder logic – check if on a ladder
         boolean isOnLadder;
         isOnLadder = climbLadder(input, ladders);
 
-        // 6) Jump logic: if on platform (we'll detect after we move) but let's queue jump if needed
         boolean wantsToJump = input.wasPressed(Keys.SPACE);
 
-        // 7) If not on ladder, apply gravity, move Mario
         if (!isOnLadder) {
             setVelocityY(getVelocityY() + MARIO_GRAVITY);
             setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY()));
         }
 
-        // 8) Actually move Mario vertically after gravity
         setCentreY(getCentreY() + getVelocityY());
 
-        // 9) Check for platform collision AFTER Mario moves
         boolean onPlatform;
         onPlatform = fallToPlatform(platforms, hammer);
 
-        // 10) If we are on the platform, allow jumping; Prevent Mario from falling below the ground
         jump(onPlatform, wantsToJump);
 
-        // 11) Enforce horizontal screen bounds
         enforceBoundaries();
 
-        // 12) Draw Mario
-        setActiveSprite();
+        updateSprite();
         display();
     }
 }
+
+
+
+
