@@ -35,11 +35,45 @@ public class LevelTwo extends GameScreen {
             gameOver = true;
         }
 
+        if (donkeyKong.getHealth() <= 0) {
+            gameWon = true;
+            gameOver = true;
+        }
+
+        if (mario.isHit()) {
+            gameWon = false;
+            gameOver = true;
+        }
+
         for (Barrel barrel : barrels) {
             if (mario.isTouching(barrel)) {
                 if (mario.hasHammer()) {
                     //increase points
                     barrel.destroy();
+                } else {
+                    gameWon = false;
+                    gameOver = true;
+                }
+            }
+        }
+
+        for (NormalMonkey monkey : normalMonkeys) {
+            if (mario.isTouching(monkey)) {
+                if (mario.hasHammer()) {
+                    monkey.destroy();
+                    // add points
+                } else {
+                    gameWon = false;
+                    gameOver = true;
+                }
+            }
+        }
+
+        for (IntelligentMonkey monkey : intelligentMonkeys) {
+            if (mario.isTouching(monkey)) {
+                if (mario.hasHammer()) {
+                    monkey.destroy();
+                    // add points
                 } else {
                     gameWon = false;
                     gameOver = true;
@@ -72,10 +106,10 @@ public class LevelTwo extends GameScreen {
         }
 
         for (IntelligentMonkey monkey : intelligentMonkeys) {
-            monkey.update(platforms);
+            monkey.update(platforms, mario);
         }
 
-        mario.update(input, platforms, ladders, hammer, blasters, normalMonkeys, intelligentMonkeys);
+        mario.update(input, platforms, ladders, hammer, blasters, normalMonkeys, intelligentMonkeys, donkeyKong);
         donkeyKong.update(platforms);
         hammer.display();
 

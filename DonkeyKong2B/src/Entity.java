@@ -20,6 +20,10 @@ public abstract class Entity extends GameObject implements Movable {
         isRight = right;
     }
 
+    public void updateSprite() {
+        setSprite(isRight ? RIGHT_SPRITE : LEFT_SPRITE);
+    }
+
     public abstract void moveHorizontal();
 
     public void enforceBoundaries() {

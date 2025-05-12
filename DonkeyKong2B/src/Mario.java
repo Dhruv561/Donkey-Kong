@@ -13,6 +13,7 @@ public class Mario extends Entity implements Attackable {
     private boolean hasHammer = false;
     private boolean hasBlaster = false;
     private boolean isJumping = false;
+    private boolean isHit = false;
     private int bulletsRemaining = 0;
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
@@ -27,7 +28,8 @@ public class Mario extends Entity implements Attackable {
         super(centreX, centreY, LEFT_SPRITE, RIGHT_SPRITE, MARIO_GRAVITY, MARIO_TERMINAL_VELOCITY);
     }
 
-    private void updateSprite() {
+    @Override
+    public void updateSprite() {
         // 1) Remember the old image and its bottom
         double oldBottom = getBottomY();
 
@@ -70,6 +72,14 @@ public class Mario extends Entity implements Attackable {
 
     public boolean hasHammer() {
         return this.hasHammer;
+    }
+
+    public void hit() {
+        this.isHit = true;
+    }
+
+    public boolean isHit() {
+        return this.isHit;
     }
 
     @Override
@@ -219,7 +229,7 @@ public class Mario extends Entity implements Attackable {
         display();
     }
 
-    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys) {
+    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong) {
         moveHorizontal(input);
         touchingHammer(hammer);
         touchingBlaster(blaster);
@@ -227,7 +237,7 @@ public class Mario extends Entity implements Attackable {
 
         for (Bullet bullet : bullets) {
             if (!bullet.isDestroyed()) {
-                bullet.update(normalMonkeys, intelligentMonkeys);
+                bullet.update(normalMonkeys, intelligentMonkeys, donkeyKong);
             }
         }
 

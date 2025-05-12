@@ -9,6 +9,14 @@ public class DonkeyKong extends Entity {
         super(centreX, centreY, new Image("res/donkey_kong.png"), new Image("res/donkey_kong.png"), GRAVITY, DONKEY_TERMINAL_VELOCITY);
     }
 
+    public void hit() {
+        this.health -= 1;
+    }
+
+    public int getHealth () {
+        return this.health;
+    }
+
     @Override
     public void moveHorizontal() {}
 
