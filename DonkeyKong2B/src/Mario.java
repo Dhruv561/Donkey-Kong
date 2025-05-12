@@ -50,7 +50,19 @@ public class Mario extends Entity implements Attackable {
     public void touchingHammer(Hammer hammer) {
         if (isTouching(hammer)) {
             this.hasHammer = true;
+            this.hasBlaster = false;
             hammer.collect();
+        }
+    }
+
+    public void touchingBlaster(Blaster[] blasters) {
+        for (Blaster blaster : blasters) {
+            if (isTouching(blaster)) {
+                this.hasBlaster = true;
+                this.hasHammer = false;
+                blaster.collect();
+                bulletsRemaining += BULLETS;
+            }
         }
     }
 
@@ -175,6 +187,34 @@ public class Mario extends Entity implements Attackable {
     public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
         moveHorizontal(input);
         touchingHammer(hammer);
+
+        boolean isOnLadder;
+        isOnLadder = climbLadder(input, ladders);
+
+        boolean wantsToJump = input.wasPressed(Keys.SPACE);
+
+        if (!isOnLadder) {
+            setVelocityY(getVelocityY() + MARIO_GRAVITY);
+            setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY()));
+        }
+
+        setCentreY(getCentreY() + getVelocityY());
+
+        boolean onPlatform;
+        onPlatform = fallToPlatform(platforms, hammer);
+
+        jump(onPlatform, wantsToJump);
+
+        enforceBoundaries();
+
+        updateSprite();
+        display();
+    }
+
+    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster) {
+        moveHorizontal(input);
+        touchingHammer(hammer);
+        touchingBlaster(blaster);
 
         boolean isOnLadder;
         isOnLadder = climbLadder(input, ladders);

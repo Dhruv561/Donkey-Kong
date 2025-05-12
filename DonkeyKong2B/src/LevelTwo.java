@@ -50,7 +50,7 @@ public class LevelTwo extends GameScreen {
             blaster.display();
         }
 
-        mario.update(input, platforms, ladders, hammer);
+        mario.update(input, platforms, ladders, hammer, blasters);
         donkeyKong.update(platforms);
         hammer.display();
         //isGameOver();
