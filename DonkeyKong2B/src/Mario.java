@@ -1,5 +1,6 @@
 import bagel.*;
 import bagel.util.Rectangle;
+import java.util.*;
 
 public class Mario extends Entity implements Attackable {
     private static final Image RIGHT_SPRITE = new Image("res/mario_right.png");
@@ -13,6 +14,7 @@ public class Mario extends Entity implements Attackable {
     private boolean hasBlaster = false;
     private boolean isJumping = false;
     private int bulletsRemaining = 0;
+    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
     private static final int BULLETS = 5;
     private static final double MOVE_VELOCITY = 3.5;
@@ -180,8 +182,14 @@ public class Mario extends Entity implements Attackable {
     }
 
     @Override
-    public void launchProjectile(GameObject projectile) {
+    public void launchProjectile() {}
 
+    public void launchProjectile(Input input) {
+        if (bulletsRemaining > 0 && input.wasPressed(Keys.S) && hasBlaster) {
+            bulletsRemaining -= 1;
+            Bullet bullet = new Bullet(getCentreX(), getCentreY(), isRight());
+            bullets.add(bullet);
+        }
     }
 
     public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
@@ -215,6 +223,13 @@ public class Mario extends Entity implements Attackable {
         moveHorizontal(input);
         touchingHammer(hammer);
         touchingBlaster(blaster);
+        launchProjectile(input);
+
+        for (Bullet bullet : bullets) {
+            if (!bullet.isDestroyed()) {
+                bullet.update();
+            }
+        }
 
         boolean isOnLadder;
         isOnLadder = climbLadder(input, ladders);

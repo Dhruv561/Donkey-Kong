@@ -19,7 +19,7 @@ public class IntelligentMonkey extends Entity implements Attackable {
     }
 
     @Override
-    public void launchProjectile(GameObject projectile) {
+    public void launchProjectile() {
 
     }
 
