@@ -20,7 +20,8 @@ public class ShadowDonkeyKong extends AbstractGame {
 
     private boolean gameStarted = false;
     private boolean gameOver = false;
-    private int points = 0;
+    private boolean levelOneComplete = false;
+    private boolean levelTwoComplete = false;
 
     public ShadowDonkeyKong(Properties gameProps, Properties messageProps) {
         super(Integer.parseInt(gameProps.getProperty("window.width")),
@@ -30,7 +31,7 @@ public class ShadowDonkeyKong extends AbstractGame {
         this.MESSAGE_PROPS = messageProps;
         this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
         this.levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
-        //this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
+        this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
         screenWidth = Integer.parseInt(gameProps.getProperty("window.width"));
         screenHeight = Integer.parseInt(gameProps.getProperty("window.height"));
     }
@@ -59,24 +60,34 @@ public class ShadowDonkeyKong extends AbstractGame {
             // start the game if enter is pressed
             if (!gameStarted && (input.wasPressed(Keys.ENTER) || input.wasPressed(Keys.NUM_1))) {
                 gameStarted = true;
+            } else if (!gameStarted && input.wasPressed(Keys.NUM_2)) {
+                gameStarted = true;
+                levelOneComplete = true;
             }
         }
+
         // show game screen where main gameplay occurs
-        if (gameStarted && !gameOver) {
-            //levelOne.display();
-            // update game screen with movement rendering
+        if (gameStarted && !gameOver && !levelOneComplete) {
             levelOne.update(input);
 
             // game is over
-            if (false) {
-                gameOver = true;
-                gameStarted = false;
+            if (levelOne.gameOver()) {
+                if (levelOne.gameWon()) {
+                    levelOneComplete = true;
+                } else {
+                    gameOver = true;
+                }
             }
+        }
+
+        if (gameStarted && !gameOver && levelOneComplete && !levelTwoComplete) {
+            levelTwo.update(input);
         }
 
         if (gameOver) {
             // display end screen
-            endScreen = new EndScreen(true, 100, GAME_PROPS, MESSAGE_PROPS);
+            int points = levelOne.gameWon() ? 100 : 0;
+            endScreen = new EndScreen(levelOne.gameWon(), points, GAME_PROPS, MESSAGE_PROPS);
             endScreen.display();
             if (input.wasPressed(Keys.SPACE)) {
                 // restart game and go to start screen

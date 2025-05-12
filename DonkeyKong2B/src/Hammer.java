@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Hammer extends GameObject {
+public class Hammer extends GameObject implements Collectable {
     private boolean isCollected = false;
     private final static double GRAVITY = 0;
     public static final double HAMMER_TERMINAL_VELOCITY = 0;
@@ -10,8 +10,9 @@ public class Hammer extends GameObject {
         super(centreX, centreY, new Image("res/hammer.png") , GRAVITY, HAMMER_TERMINAL_VELOCITY);
     }
 
-    public void isCollected(boolean collected) {
-        this.isCollected = collected;
+    @Override
+    public void collect() {
+        this.isCollected = true;
     }
 
     @Override

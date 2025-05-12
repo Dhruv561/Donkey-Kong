@@ -23,7 +23,7 @@ public class LevelTwo extends GameScreen {
         createBarrels(LEVEL);
         createLadders(LEVEL);
         createBlasters();
-        createMonkeys();
+        //createMonkeys();
     }
 
     @Override
@@ -33,6 +33,26 @@ public class LevelTwo extends GameScreen {
 
     @Override
     public void update(Input input) {
+        drawBackground();
+        for (Platform platform : platforms) {
+            platform.display();
+        }
 
+        for (Barrel barrel: barrels) {
+            barrel.update(platforms);
+        }
+
+        for (Ladder ladder: ladders) {
+            ladder.display();
+        }
+
+        for (Blaster blaster: blasters) {
+            blaster.display();
+        }
+
+        mario.update(input, platforms, ladders, hammer);
+        donkeyKong.update(platforms);
+        hammer.display();
+        //isGameOver();
     }
 }

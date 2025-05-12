@@ -13,8 +13,8 @@ public abstract class GameScreen extends Screen {
     protected IntelligentMonkey[] intelligentMonkeys;
     protected Blaster[] blasters;
 
-    boolean gameOver = false;
-    boolean gameWon = false;
+    protected boolean gameOver = false;
+    protected boolean gameWon = false;
 
     /**
      * Initialises screen based on game and message properties
@@ -24,6 +24,14 @@ public abstract class GameScreen extends Screen {
      */
     public GameScreen(Properties gameProps, Properties messageProps) {
         super(gameProps, messageProps);
+    }
+
+    public boolean gameOver() {
+        return this.gameOver;
+    }
+
+    public boolean gameWon() {
+        return this.gameWon;
     }
 
     public abstract void update(Input input);

@@ -3,11 +3,11 @@ import bagel.util.Rectangle;
 
 public class Mario extends Entity implements Attackable {
     private static final Image RIGHT_SPRITE = new Image("res/mario_right.png");
-    private static final Image LEFT_SPRITE = new Image("res/mario_left.png");;
+    private static final Image LEFT_SPRITE = new Image("res/mario_left.png");
     private static final Image RIGHT_HAMMER_SPRITE = new Image("res/mario_hammer_right.png");
     private static final Image LEFT_HAMMER_SPRITE = new Image("res/mario_hammer_left.png");
-    private static final Image RIGHT_BLASTER_SPRITE = new Image("res/mario_blaster_right.png");;
-    private static final Image LEFT_BLASTER_SPRITE = new Image("res/mario_blaster_left.png");;
+    private static final Image RIGHT_BLASTER_SPRITE = new Image("res/mario_blaster_right.png");
+    private static final Image LEFT_BLASTER_SPRITE = new Image("res/mario_blaster_left.png");
 
     private boolean hasHammer = false;
     private boolean hasBlaster = false;
@@ -50,8 +50,12 @@ public class Mario extends Entity implements Attackable {
     public void touchingHammer(Hammer hammer) {
         if (isTouching(hammer)) {
             this.hasHammer = true;
-            hammer.isCollected(true);
+            hammer.collect();
         }
+    }
+
+    public boolean hasHammer() {
+        return this.hasHammer;
     }
 
     @Override
@@ -137,7 +141,7 @@ public class Mario extends Entity implements Attackable {
         boolean onPlatform = false;
 
         // We'll only snap Mario to a platform if he's moving downward (velocityY >= 0)
-        // so we don't kill his jump in mid-air.
+        // so we don't kill his jump in midair.
         if (getVelocityY() >= 0) {
             for (Platform platform : platforms) {
                 Rectangle marioBounds    = getBoundingBox();
@@ -195,7 +199,3 @@ public class Mario extends Entity implements Attackable {
         display();
     }
 }
-
-
-
-

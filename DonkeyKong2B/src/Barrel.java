@@ -16,6 +16,10 @@ public class Barrel extends GameObject {
         }
     }
 
+    public void destroy() {
+        this.isDestroyed = true;
+    }
+
     public void update(Platform[] platforms) {
         fallToPlatform(platforms);
         display();

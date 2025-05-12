@@ -25,8 +25,25 @@ public class LevelOne extends GameScreen {
     }
 
     @Override
-    public void display() {
+    public void display() {}
 
+    public void isGameOver() {
+        if (mario.isTouching(donkeyKong)) {
+            gameWon = mario.hasHammer();
+            gameOver = true;
+        }
+
+        for (Barrel barrel : barrels) {
+            if (mario.isTouching(barrel)) {
+                if (mario.hasHammer()) {
+                    //increase points
+                    barrel.destroy();
+                } else {
+                    gameWon = false;
+                    gameOver = true;
+                }
+            }
+        }
     }
 
     @Override
@@ -47,6 +64,6 @@ public class LevelOne extends GameScreen {
         mario.update(input, platforms, ladders, hammer);
         donkeyKong.update(platforms);
         hammer.display();
-
+        isGameOver();
     }
 }
