@@ -8,7 +8,7 @@ public class Banana extends GameObject {
     private final static int BANANA_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 1.8;
     private final static int MAXIMUM_PIXELS = 300;
-    private final static int offscreen = -100;
+    private final static int offscreen = -500;
 
     public Banana(double centreX, double centreY, boolean isRight) {
         super(centreX, centreY, new Image("res/banana.png"), BANANA_GRAVITY, BANANA_TERMINAL_VELOCITY);

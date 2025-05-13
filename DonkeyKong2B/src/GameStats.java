@@ -70,6 +70,10 @@ public class GameStats {
         return (MAX_FRAME - currentFrame) / SECOND;
     }
 
+    public int getRemainingTime(int frame) {
+        return (MAX_FRAME - frame) / SECOND;
+    }
+
     public void increaseFrame() {
         currentFrame++;
     }

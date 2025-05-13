@@ -3,6 +3,8 @@ import java.util.*;
 
 public class IntelligentMonkey extends Entity implements Attackable {
     private boolean isDestroyed = false;
+    private int currentFrame = 5;
+    private int lastShot = 0;
     private int[] movementPattern;
     private ArrayList<Banana> bananas = new ArrayList<Banana>();
     private final static double MOVEMENT_VELOCITY = 0.5;
@@ -41,14 +43,19 @@ public class IntelligentMonkey extends Entity implements Attackable {
     }
 
     @Override
-    public void launchProjectile() {
-        Banana banana = new Banana(getCentreX(), getCentreY(), isRight());
-        bananas.add(banana);
+    public void launchProjectile() {}
+
+    public void launchProjectile(GameStats stats) {
+        if (stats.getRemainingTime(lastShot) - stats.getRemainingTime(currentFrame) >= PROJECTILE_COOLDOWN) {
+            Banana banana = new Banana(getCentreX(), getCentreY(), isRight());
+            bananas.add(banana);
+            lastShot = currentFrame;
+        }
     }
 
-    public void update(Platform[] platforms, Mario mario) {
+    public void update(Platform[] platforms, Mario mario, GameStats stats) {
         fallToPlatform(platforms);
-        launchProjectile();
+        launchProjectile(stats);
         for (Banana banana : bananas) {
             if (!banana.isDestroyed()) {
                 banana.update(mario);
@@ -56,5 +63,6 @@ public class IntelligentMonkey extends Entity implements Attackable {
         }
         updateSprite();
         display();
+        currentFrame++;
     }
 }

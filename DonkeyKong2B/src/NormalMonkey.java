@@ -9,7 +9,7 @@ public class NormalMonkey extends Entity {
     private final static int offscreen = -100;
 
     public NormalMonkey(double centreX, double centreY, boolean isRight, int[] movementPattern) {
-        super(centreX, centreY, new Image("res/normal_monkey_right.png"), new Image("res/normal_monkey_left.png"), NORMAL_GRAVITY, NORMAL_TERMINAL_VELOCITY);
+        super(centreX, centreY, new Image("res/normal_monkey_left.png"), new Image("res/normal_monkey_right.png"), NORMAL_GRAVITY, NORMAL_TERMINAL_VELOCITY);
         setRight(isRight);
         this.movementPattern = movementPattern;
     }
