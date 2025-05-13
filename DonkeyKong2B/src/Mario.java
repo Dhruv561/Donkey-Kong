@@ -20,7 +20,8 @@ public class Mario extends Entity implements Attackable {
     private static final int BULLETS = 5;
     private static final double MOVE_VELOCITY = 3.5;
     private static final double LADDER_VELOCITY = 2;
-    private static final double JUMP_VELOCITY = -5;
+    private static final double FINAL_JUMP_VELOCITY = 0;
+    private static final double INITIAL_JUMP_VELOCITY = -5;
     private static final double MARIO_TERMINAL_VELOCITY = 10;
     private static final double MARIO_GRAVITY = 0.2;
 
@@ -82,6 +83,14 @@ public class Mario extends Entity implements Attackable {
         return this.isHit;
     }
 
+    public int getBullets() {
+        return this.bulletsRemaining;
+    }
+
+    public double getMaxJumpHeight() {
+        return Math.abs((Math.pow(FINAL_JUMP_VELOCITY, 2) - Math.pow(INITIAL_JUMP_VELOCITY, 2)) / (2 * MARIO_GRAVITY));
+    }
+
     @Override
     public void moveHorizontal() {}
 
@@ -99,7 +108,7 @@ public class Mario extends Entity implements Attackable {
 
     private void jump(boolean onPlatform, boolean wantsToJump) {
         if (onPlatform && wantsToJump) {
-            setVelocityY(JUMP_VELOCITY);
+            setVelocityY(INITIAL_JUMP_VELOCITY);
             isJumping = true;
         }
         if (getBottomY() > ShadowDonkeyKong.getScreenHeight()) {
@@ -109,6 +118,14 @@ public class Mario extends Entity implements Attackable {
         }
     }
 
+    public boolean jumpingOverBarrel(Barrel barrel) {
+            double jumpRange = barrel.getBottomY() - getMaxJumpHeight() - getHeight() / 2;
+            boolean inlineWithBarrel = barrel.getLeftX() <= getCentreX() && getCentreX() <= barrel.getRightX();
+            boolean overBarrel = getCentreY() < barrel.getTopY();
+            boolean inJumpingRange = getCentreY() >= jumpRange;
+
+            return inlineWithBarrel && overBarrel && inJumpingRange;
+    }
 
     public boolean climbLadder(Input input, Ladder[] ladders) {
         boolean isOnLadder = false;
@@ -191,6 +208,15 @@ public class Mario extends Entity implements Attackable {
         return onPlatform;
     }
 
+    public boolean onPlatform(Platform[] platforms) {
+        for (Platform platform : platforms) {
+            if (platform.getTopY() == getBottomY()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void launchProjectile() {}
 
@@ -229,7 +255,7 @@ public class Mario extends Entity implements Attackable {
         display();
     }
 
-    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong) {
+    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Barrel[] barrels, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
         moveHorizontal(input);
         touchingHammer(hammer);
         touchingBlaster(blaster);
@@ -237,7 +263,7 @@ public class Mario extends Entity implements Attackable {
 
         for (Bullet bullet : bullets) {
             if (!bullet.isDestroyed()) {
-                bullet.update(normalMonkeys, intelligentMonkeys, donkeyKong);
+                bullet.update(normalMonkeys, intelligentMonkeys, donkeyKong, stats);
             }
         }
 

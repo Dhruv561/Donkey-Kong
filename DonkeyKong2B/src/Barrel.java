@@ -23,7 +23,11 @@ public class Barrel extends GameObject {
         setCentreY(offscreen);
     }
 
-    public void update(Platform[] platforms) {
+    public boolean isDestroyed() {
+        return this.isDestroyed;
+    }
+
+    public void update(Platform[] platforms, Mario mario) {
         fallToPlatform(platforms);
         display();
     }

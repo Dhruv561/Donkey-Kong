@@ -3,9 +3,11 @@ import bagel.*;
 
 public class LevelTwo extends GameScreen {
     private final int LEVEL = 2;
+    private final GameStats STATS;
 
     public LevelTwo(Properties gameProps, Properties messageProps) {
         super(gameProps, messageProps);
+        this.STATS = new GameStats(gameProps, messageProps);
         loadLevel();
     }
 
@@ -29,9 +31,18 @@ public class LevelTwo extends GameScreen {
     @Override
     public void display() {}
 
+    public int getPoints() {
+        return STATS.getPoints();
+    }
+
     private void isGameOver() {
         if (mario.isTouching(donkeyKong)) {
-            gameWon = mario.hasHammer();
+            if (mario.hasHammer()) {
+                gameWon = true;
+                STATS.timeMultiplier();
+            } else {
+                gameWon = false;
+            }
             gameOver = true;
         }
 
@@ -48,7 +59,7 @@ public class LevelTwo extends GameScreen {
         for (Barrel barrel : barrels) {
             if (mario.isTouching(barrel)) {
                 if (mario.hasHammer()) {
-                    //increase points
+                    STATS.barrelDestroyed();
                     barrel.destroy();
                 } else {
                     gameWon = false;
@@ -60,8 +71,8 @@ public class LevelTwo extends GameScreen {
         for (NormalMonkey monkey : normalMonkeys) {
             if (mario.isTouching(monkey)) {
                 if (mario.hasHammer()) {
+                    STATS.monkeyDestroyed();
                     monkey.destroy();
-                    // add points
                 } else {
                     gameWon = false;
                     gameOver = true;
@@ -72,8 +83,8 @@ public class LevelTwo extends GameScreen {
         for (IntelligentMonkey monkey : intelligentMonkeys) {
             if (mario.isTouching(monkey)) {
                 if (mario.hasHammer()) {
+                    STATS.monkeyDestroyed();
                     monkey.destroy();
-                    // add points
                 } else {
                     gameWon = false;
                     gameOver = true;
@@ -90,7 +101,11 @@ public class LevelTwo extends GameScreen {
         }
 
         for (Barrel barrel: barrels) {
-            barrel.update(platforms);
+            if (mario.jumpingOverBarrel(barrel) && !barrel.isDestroyed()) {
+                STATS.jumpedOver();
+                STATS.changeBarrelScore(false);
+            }
+            barrel.update(platforms, mario);
         }
 
         for (Ladder ladder: ladders) {
@@ -109,10 +124,15 @@ public class LevelTwo extends GameScreen {
             monkey.update(platforms, mario);
         }
 
-        mario.update(input, platforms, ladders, hammer, blasters, normalMonkeys, intelligentMonkeys, donkeyKong);
+        mario.update(input, platforms, ladders, hammer, barrels, blasters, normalMonkeys, intelligentMonkeys, donkeyKong, STATS);
         donkeyKong.update(platforms);
         hammer.display();
 
+        if (mario.onPlatform(platforms)) {
+            STATS.changeBarrelScore(true);
+        }
+        STATS.display(donkeyKong.getHealth(), mario.getBullets());
+        STATS.increaseFrame();
         isGameOver();
     }
 }

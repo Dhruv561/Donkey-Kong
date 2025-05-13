@@ -95,7 +95,7 @@ public class ShadowDonkeyKong extends AbstractGame {
 
         if (gameOver) {
             // display end screen
-            int points = levelOne.gameWon() ? 100 : 0;
+            int points = levelOne.gameWon() && levelTwo.gameWon() ? levelOne.getPoints() + levelTwo.getPoints() : 0;
             endScreen = new EndScreen(levelOne.gameWon(), points, GAME_PROPS, MESSAGE_PROPS);
             endScreen.display();
             if (input.wasPressed(Keys.SPACE)) {

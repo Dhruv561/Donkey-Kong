@@ -3,9 +3,11 @@ import bagel.*;
 
 public class LevelOne extends GameScreen {
     private final int LEVEL = 1;
+    private final GameStats STATS;
 
     public LevelOne(Properties gameProps, Properties messageProps) {
         super(gameProps, messageProps);
+        this.STATS = new GameStats(gameProps, messageProps);
         loadLevel();
     }
 
@@ -27,16 +29,25 @@ public class LevelOne extends GameScreen {
     @Override
     public void display() {}
 
+    public int getPoints() {
+        return STATS.getPoints();
+    }
+
     private void isGameOver() {
         if (mario.isTouching(donkeyKong)) {
-            gameWon = mario.hasHammer();
+            if (mario.hasHammer()) {
+                gameWon = true;
+                STATS.timeMultiplier();
+            } else {
+                gameWon = false;
+            }
             gameOver = true;
         }
 
         for (Barrel barrel : barrels) {
             if (mario.isTouching(barrel)) {
                 if (mario.hasHammer()) {
-                    //increase points
+                    STATS.barrelDestroyed();
                     barrel.destroy();
                 } else {
                     gameWon = false;
@@ -54,7 +65,11 @@ public class LevelOne extends GameScreen {
         }
 
         for (Barrel barrel: barrels) {
-            barrel.update(platforms);
+            if (mario.jumpingOverBarrel(barrel) && !barrel.isDestroyed()) {
+                STATS.jumpedOver();
+                STATS.changeBarrelScore(false);
+            }
+            barrel.update(platforms, mario);
         }
 
         for (Ladder ladder: ladders) {
@@ -64,6 +79,12 @@ public class LevelOne extends GameScreen {
         mario.update(input, platforms, ladders, hammer);
         donkeyKong.update(platforms);
         hammer.display();
+
+        if (mario.onPlatform(platforms)) {
+            STATS.changeBarrelScore(true);
+        }
+        STATS.display();
+        STATS.increaseFrame();
         isGameOver();
     }
 }

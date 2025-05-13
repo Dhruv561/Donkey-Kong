@@ -32,10 +32,11 @@ public class Bullet extends GameObject {
         }
     }
 
-    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong) {
+    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
         for (NormalMonkey monkey : normalMonkeys) {
             if (isTouching(monkey)) {
                 monkey.destroy();
+                stats.monkeyDestroyed();
                 destroy();
             }
         }
@@ -43,6 +44,7 @@ public class Bullet extends GameObject {
         for (IntelligentMonkey monkey : intelligentMonkeys) {
             if (isTouching(monkey)) {
                 monkey.destroy();
+                stats.monkeyDestroyed();
                 destroy();
             }
         }
@@ -53,7 +55,7 @@ public class Bullet extends GameObject {
         }
     }
 
-    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong) {
+    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
         if (isRight) {
             setCentreX(getCentreX() + MOVEMENT_VELOCITY);
         } else {
@@ -62,7 +64,7 @@ public class Bullet extends GameObject {
         if (getCentreX() >= ShadowDonkeyKong.getScreenWidth() || getCentreX() <= 0) {
             isDestroyed = true;
         }
-        monkeyCollision(normalMonkeys, intelligentMonkeys, donkeyKong);
+        monkeyCollision(normalMonkeys, intelligentMonkeys, donkeyKong, stats);
         display();
     }
 }
