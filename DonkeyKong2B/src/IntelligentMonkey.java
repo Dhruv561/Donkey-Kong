@@ -6,6 +6,8 @@ public class IntelligentMonkey extends Entity implements Attackable {
     private int currentFrame = 5;
     private int lastShot = 0;
     private int[] movementPattern;
+    private int currentIdx = 0;
+    private double startingX;
     private ArrayList<Banana> bananas = new ArrayList<Banana>();
     private final static double MOVEMENT_VELOCITY = 0.5;
     private final static int PROJECTILE_COOLDOWN = 5;
@@ -35,10 +37,25 @@ public class IntelligentMonkey extends Entity implements Attackable {
         }
     }
 
-
     @Override
-    public void moveHorizontal() {
+    public void moveHorizontal() {}
 
+    public void moveHorizontal(Platform[] platforms) {
+        if (isDestroyed) {
+            return;
+        }
+
+        if (Math.abs(startingX - getCentreX()) >= movementPattern[currentIdx] || atBoundary(platforms)) {
+            currentIdx = (currentIdx + 1) % movementPattern.length;
+            startingX = getCentreX();
+            setRight(!isRight());
+        }
+
+        if (isRight()) {
+            setCentreX(getCentreX() + MOVEMENT_VELOCITY);
+        } else {
+            setCentreX(getCentreX() - MOVEMENT_VELOCITY);
+        }
     }
 
     @Override
@@ -54,12 +71,15 @@ public class IntelligentMonkey extends Entity implements Attackable {
 
     public void update(Platform[] platforms, Mario mario, GameStats stats) {
         fallToPlatform(platforms);
+        moveHorizontal(platforms);
+
         launchProjectile(stats);
         for (Banana banana : bananas) {
             if (!banana.isDestroyed()) {
                 banana.update(mario);
             }
         }
+
         updateSprite();
         display();
         currentFrame++;

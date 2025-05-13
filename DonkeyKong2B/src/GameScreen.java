@@ -98,7 +98,7 @@ public abstract class GameScreen extends Screen {
                 movementPattern[j] = Integer.parseInt(movementString[j]);
             }
 
-            normalMonkeys[i - 1] = new NormalMonkey(x, y, isRight, movementPattern);
+            normalMonkeys[i - 1] = new NormalMonkey(x, y, !isRight, movementPattern);
         }
     }
 
@@ -121,7 +121,7 @@ public abstract class GameScreen extends Screen {
                 movementPattern[j] = Integer.parseInt(movementString[j]);
             }
 
-            intelligentMonkeys[i - 1] = new IntelligentMonkey(x, y, isRight, movementPattern);
+            intelligentMonkeys[i - 1] = new IntelligentMonkey(x, y, !isRight, movementPattern);
         }
     }
 

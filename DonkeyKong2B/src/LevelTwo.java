@@ -130,16 +130,17 @@ public class LevelTwo extends GameScreen {
             blaster.display();
         }
 
-        for (NormalMonkey monkey : normalMonkeys) {
-            monkey.update(platforms);
-        }
+        donkeyKong.update(platforms);
 
         for (IntelligentMonkey monkey : intelligentMonkeys) {
             monkey.update(platforms, mario, STATS);
         }
 
+        for (NormalMonkey monkey : normalMonkeys) {
+            monkey.update(platforms);
+        }
+
         mario.update(input, platforms, ladders, hammer, barrels, blasters, normalMonkeys, intelligentMonkeys, donkeyKong, STATS);
-        donkeyKong.update(platforms);
         hammer.display();
 
         if (mario.onPlatform(platforms)) {

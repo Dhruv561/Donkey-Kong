@@ -40,4 +40,29 @@ public abstract class Entity extends GameObject implements Movable {
             setCentreY(ShadowDonkeyKong.getScreenHeight() - getHeight() / 2);
         }
     }
+
+    public boolean atBoundary(Platform[] platforms) {
+        boolean rightEdge = getRightX() >= ShadowDonkeyKong.getScreenWidth();
+        boolean leftEdge = getLeftX() <= 0;
+
+        Platform platform = findPlatform(platforms);
+        boolean platformEdge = false;
+
+        if (platform != null) {
+            boolean leftPlatformEdge = getLeftX() <= platform.getLeftX();
+            boolean rightPlatformEdge = getRightX() >= platform.getRightX();
+            platformEdge = leftPlatformEdge || rightPlatformEdge;
+        }
+
+        return rightEdge || leftEdge || platformEdge;
+    }
+
+    public Platform findPlatform(Platform[] platforms) {
+        for (Platform platform : platforms) {
+            if (getBottomY() == platform.getTopY()) {
+                return platform;
+            }
+        }
+        return null;
+    }
 }
