@@ -87,21 +87,32 @@ public class ShadowDonkeyKong extends AbstractGame {
             if (levelTwo.gameOver()) {
                 if (levelTwo.gameWon()) {
                     levelTwoComplete = true;
-                } else {
-                    gameOver = true;
                 }
+                gameOver = true;
             }
         }
 
         if (gameOver) {
             // display end screen
-            int points = levelOne.gameWon() && levelTwo.gameWon() ? levelOne.getPoints() + levelTwo.getPoints() : 0;
-            endScreen = new EndScreen(levelOne.gameWon(), points, GAME_PROPS, MESSAGE_PROPS);
+            int points;
+            if (levelOne.gameWon() && levelTwo.gameWon()) {
+                points = levelOne.getPoints() + levelTwo.getPoints();
+            } else if (levelTwo.gameWon) {
+                points = levelTwo.getPoints();
+            } else {
+                points = 0;
+            }
+
+            endScreen = new EndScreen(levelOne.gameWon() || levelTwo.gameWon(), points, GAME_PROPS, MESSAGE_PROPS);
             endScreen.display();
             if (input.wasPressed(Keys.SPACE)) {
                 // restart game and go to start screen
                 gameOver = false;
+                gameStarted = false;
+                levelOneComplete = false;
+                levelTwoComplete = false;
                 levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
+                levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
             }
         }
     }
@@ -137,3 +148,5 @@ public class ShadowDonkeyKong extends AbstractGame {
         game.run();
     }
 }
+
+

@@ -8,7 +8,7 @@ public class Bullet extends GameObject {
     private final static int BULLET_GRAVITY = 0;
     private final static int BULLET_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 3.8;
-    private final static int offscreen = -100;
+    private final static int OFFSCREEN = -100;
 
     public Bullet(double centreX, double centreY, boolean isRight) {
         super(centreX, centreY, isRight ? RIGHT_SPRITE : LEFT_SPRITE, BULLET_GRAVITY, BULLET_TERMINAL_VELOCITY);
@@ -21,8 +21,8 @@ public class Bullet extends GameObject {
 
     private void destroy() {
         this.isDestroyed = true;
-        setCentreY(offscreen);
-        setCentreX(offscreen);
+        setCentreY(OFFSCREEN);
+        setCentreX(OFFSCREEN);
     }
 
     @Override

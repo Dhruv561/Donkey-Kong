@@ -91,6 +91,11 @@ public class LevelTwo extends GameScreen {
                 }
             }
         }
+
+        if (STATS.getRemainingTime() <= 0) {
+            gameWon = false;
+            gameOver = true;
+        }
     }
 
     @Override

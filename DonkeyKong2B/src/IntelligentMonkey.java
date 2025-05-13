@@ -11,7 +11,7 @@ public class IntelligentMonkey extends Entity implements Attackable {
     private final static int PROJECTILE_COOLDOWN = 5;
     private final static double INTELLIGENT_GRAVITY = 0.4;
     private final static double INTELLIGENT_TERMINAL_VELOCITY = 5;
-    private final static int offscreen = -100;
+    private final static int OFFSCREEN = -100;
 
     public IntelligentMonkey(double centreX, double centreY, boolean isRight, int[] movementPattern) {
         super(centreX, centreY, new Image("res/intelli_monkey_left.png"), new Image("res/intelli_monkey_right.png"), INTELLIGENT_GRAVITY, INTELLIGENT_TERMINAL_VELOCITY);
@@ -21,12 +21,11 @@ public class IntelligentMonkey extends Entity implements Attackable {
 
     public void destroy() {
         this.isDestroyed = true;
-        setCentreX(offscreen);
-        setCentreY(offscreen);
-
-//        for (Banana banana : bananas) {
-//            destroy();
-//        }
+        setCentreX(OFFSCREEN);
+        setCentreY(OFFSCREEN);
+        for (Banana banana: bananas) {
+            banana.destroy();
+        }
     }
 
     @Override

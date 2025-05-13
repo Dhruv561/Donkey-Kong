@@ -2,7 +2,7 @@ import bagel.*;
 
 public class Blaster extends GameObject implements Collectable {
     private boolean isCollected = false;
-    private final static int offscreenCoord = -100;
+    private final static int OFFSCREEN = -100;
     private final static int BLASTER_GRAVITY = 0;
     private final static int BLASTER_TERMINAL_VELOCITY = 0;
 
@@ -20,7 +20,7 @@ public class Blaster extends GameObject implements Collectable {
     @Override
     public void collect() {
         this.isCollected = true;
-        setCentreX(offscreenCoord);
-        setCentreY(offscreenCoord);
+        setCentreX(OFFSCREEN);
+        setCentreY(OFFSCREEN);
     }
 }
