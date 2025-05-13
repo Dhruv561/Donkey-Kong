@@ -60,6 +60,10 @@ public class LevelOne extends GameScreen {
             gameWon = false;
             gameOver = true;
         }
+
+        if (gameOver && !gameWon) {
+            STATS.setPoints(0);
+        }
     }
 
     @Override

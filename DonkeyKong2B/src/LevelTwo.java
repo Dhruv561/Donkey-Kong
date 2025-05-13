@@ -5,9 +5,10 @@ public class LevelTwo extends GameScreen {
     private final int LEVEL = 2;
     private final GameStats STATS;
 
-    public LevelTwo(Properties gameProps, Properties messageProps) {
+    public LevelTwo(Properties gameProps, Properties messageProps, int points) {
         super(gameProps, messageProps);
         this.STATS = new GameStats(gameProps, messageProps);
+        setPoints(points);
         loadLevel();
     }
 
@@ -33,6 +34,10 @@ public class LevelTwo extends GameScreen {
 
     public int getPoints() {
         return STATS.getPoints();
+    }
+
+    public void setPoints(int points) {
+        STATS.setPoints(points);
     }
 
     private void isGameOver() {
@@ -95,6 +100,10 @@ public class LevelTwo extends GameScreen {
         if (STATS.getRemainingTime() <= 0) {
             gameWon = false;
             gameOver = true;
+        }
+
+        if (gameOver && !gameWon) {
+            STATS.setPoints(0);
         }
     }
 

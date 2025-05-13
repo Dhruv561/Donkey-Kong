@@ -31,7 +31,7 @@ public class ShadowDonkeyKong extends AbstractGame {
         this.MESSAGE_PROPS = messageProps;
         this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
         this.levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
-        this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
+        //this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
         screenWidth = Integer.parseInt(gameProps.getProperty("window.width"));
         screenHeight = Integer.parseInt(gameProps.getProperty("window.height"));
     }
@@ -63,6 +63,8 @@ public class ShadowDonkeyKong extends AbstractGame {
             } else if (!gameStarted && input.wasPressed(Keys.NUM_2)) {
                 gameStarted = true;
                 levelOneComplete = true;
+                int points = levelOne.getPoints();
+                levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points);
             }
         }
 
@@ -74,6 +76,8 @@ public class ShadowDonkeyKong extends AbstractGame {
             if (levelOne.gameOver()) {
                 if (levelOne.gameWon()) {
                     levelOneComplete = true;
+                    int points = levelOne.getPoints();
+                    levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points);
                 } else {
                     gameOver = true;
                 }
@@ -95,15 +99,13 @@ public class ShadowDonkeyKong extends AbstractGame {
         if (gameOver) {
             // display end screen
             int points;
-            if (levelOne.gameWon() && levelTwo.gameWon()) {
-                points = levelOne.getPoints() + levelTwo.getPoints();
-            } else if (levelTwo.gameWon) {
+            if (levelOneComplete && levelTwoComplete) {
                 points = levelTwo.getPoints();
-            } else {
+            } else  {
                 points = 0;
             }
 
-            endScreen = new EndScreen(levelOne.gameWon() || levelTwo.gameWon(), points, GAME_PROPS, MESSAGE_PROPS);
+            endScreen = new EndScreen(levelTwoComplete, points, GAME_PROPS, MESSAGE_PROPS);
             endScreen.display();
             if (input.wasPressed(Keys.SPACE)) {
                 // restart game and go to start screen
@@ -112,7 +114,6 @@ public class ShadowDonkeyKong extends AbstractGame {
                 levelOneComplete = false;
                 levelTwoComplete = false;
                 levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
-                levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
             }
         }
     }

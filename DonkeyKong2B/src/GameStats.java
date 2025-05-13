@@ -44,6 +44,10 @@ public class GameStats {
         return this.points;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public void changeBarrelScore(boolean changeScore) {
         this.barrelJump = changeScore;
     }
