@@ -1,12 +1,12 @@
 import bagel.*;
-import bagel.util.*;
 
 public abstract class Entity extends GameObject implements Movable {
     private final Image RIGHT_SPRITE;
     private final Image LEFT_SPRITE;
     private boolean isRight = true;
 
-    public Entity(double centreX, double centerY, Image leftImage, Image rightImage, double gravity, double terminalVelocity) {
+    public Entity(double centreX, double centerY, Image leftImage, Image rightImage,
+                  double gravity, double terminalVelocity) {
         super(centreX, centerY, rightImage, gravity, terminalVelocity);
         this.RIGHT_SPRITE = rightImage;
         this.LEFT_SPRITE = leftImage;
@@ -20,7 +20,7 @@ public abstract class Entity extends GameObject implements Movable {
         isRight = right;
     }
 
-    public void updateSprite() {
+    protected void updateSprite() {
         setSprite(isRight ? RIGHT_SPRITE : LEFT_SPRITE);
     }
 
@@ -57,7 +57,7 @@ public abstract class Entity extends GameObject implements Movable {
         return rightEdge || leftEdge || platformEdge;
     }
 
-    public Platform findPlatform(Platform[] platforms) {
+    private Platform findPlatform(Platform[] platforms) {
         for (Platform platform : platforms) {
             if (getBottomY() == platform.getTopY()) {
                 return platform;

@@ -17,14 +17,14 @@ public class Barrel extends GameObject {
         }
     }
 
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
     public void destroy() {
         this.isDestroyed = true;
         setCentreX(OFFSCREEN);
         setCentreY(OFFSCREEN);
-    }
-
-    public boolean isDestroyed() {
-        return this.isDestroyed;
     }
 
     public void update(Platform[] platforms, Mario mario) {

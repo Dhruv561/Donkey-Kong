@@ -29,9 +29,6 @@ public class LevelTwo extends GameScreen {
         createMonkeys();
     }
 
-    @Override
-    public void display() {}
-
     public int getPoints() {
         return STATS.getPoints();
     }
@@ -140,7 +137,7 @@ public class LevelTwo extends GameScreen {
             monkey.update(platforms);
         }
 
-        mario.update(input, platforms, ladders, hammer, barrels, blasters, normalMonkeys, intelligentMonkeys, donkeyKong, STATS);
+        mario.update(input, platforms, ladders, hammer, blasters, normalMonkeys, intelligentMonkeys, donkeyKong, STATS);
         hammer.display();
 
         if (mario.onPlatform(platforms)) {

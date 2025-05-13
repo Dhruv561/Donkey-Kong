@@ -16,9 +16,12 @@ public class IntelligentMonkey extends Entity implements Attackable {
     private final static int OFFSCREEN = -100;
 
     public IntelligentMonkey(double centreX, double centreY, boolean isRight, int[] movementPattern) {
-        super(centreX, centreY, new Image("res/intelli_monkey_left.png"), new Image("res/intelli_monkey_right.png"), INTELLIGENT_GRAVITY, INTELLIGENT_TERMINAL_VELOCITY);
+        super(centreX, centreY, new Image("res/intelli_monkey_left.png"),
+                new Image("res/intelli_monkey_right.png"), INTELLIGENT_GRAVITY, INTELLIGENT_TERMINAL_VELOCITY);
         setRight(isRight);
+        updateSprite();
         this.movementPattern = movementPattern;
+        this.startingX = getCentreX();
     }
 
     public void destroy() {

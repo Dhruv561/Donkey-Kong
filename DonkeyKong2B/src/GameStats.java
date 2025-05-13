@@ -27,7 +27,8 @@ public class GameStats {
     public GameStats(Properties gameProps, Properties messageProps) {
         this.GAME_PROPS = gameProps;
         this.MESSAGE_PROPS = messageProps;
-        this.FONT = new Font(gameProps.getProperty("font"), Integer.parseInt(gameProps.getProperty("gamePlay.score.fontSize")));
+        this.FONT = new Font(gameProps.getProperty("font"),
+                             Integer.parseInt(gameProps.getProperty("gamePlay.score.fontSize")));
         this.MAX_FRAME = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
         this.scoreX = Integer.parseInt(gameProps.getProperty("gamePlay.score.x"));
         this.scoreY = Integer.parseInt(gameProps.getProperty("gamePlay.score.y"));

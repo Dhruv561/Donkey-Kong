@@ -11,8 +11,10 @@ public class NormalMonkey extends Entity {
     private final static int OFFSCREEN = -100;
 
     public NormalMonkey(double centreX, double centreY, boolean isRight, int[] movementPattern) {
-        super(centreX, centreY, new Image("res/normal_monkey_left.png"), new Image("res/normal_monkey_right.png"), NORMAL_GRAVITY, NORMAL_TERMINAL_VELOCITY);
+        super(centreX, centreY, new Image("res/normal_monkey_left.png"),
+                new Image("res/normal_monkey_right.png"), NORMAL_GRAVITY, NORMAL_TERMINAL_VELOCITY);
         setRight(isRight);
+        updateSprite();
         this.movementPattern = movementPattern;
         this.startingX = getCentreX();
     }

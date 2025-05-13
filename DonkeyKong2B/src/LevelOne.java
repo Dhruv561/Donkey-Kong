@@ -26,9 +26,6 @@ public class LevelOne extends GameScreen {
         createLadders(LEVEL);
     }
 
-    @Override
-    public void display() {}
-
     public int getPoints() {
         return STATS.getPoints();
     }

@@ -38,6 +38,8 @@ public abstract class GameScreen extends Screen {
 
     public abstract void loadLevel();
 
+    public void display() {}
+
     public void createPlatforms(int level) {
         String[] platformCoordinates = GAME_PROPS.getProperty("platforms.level" + level).split(";");
         platforms = new Platform[platformCoordinates.length];
@@ -82,46 +84,48 @@ public abstract class GameScreen extends Screen {
     private void createNormalMonkeys() {
         int normalMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("normalMonkey.level2.count"));
         normalMonkeys = new NormalMonkey[normalMonkeyCount];
+
         for (int i = 1; i <= normalMonkeyCount; i++) {
-            String data = GAME_PROPS.getProperty("normalMonkey.level2." + i);
-            String[] splitData = data.split(";");
+            String propertyData = GAME_PROPS.getProperty("normalMonkey.level2." + i);
+            String[] splitData = propertyData.split(";");
 
             String[] coordinates = splitData[0].split(",");
             double x = Double.parseDouble(coordinates[0]);
             double y = Double.parseDouble(coordinates[1]);
 
-            boolean isRight = "right".equals(splitData[1]);
+            boolean isRight = splitData[1].equals("right");
 
-            String[] movementString = splitData[2].split(",");
-            int[] movementPattern = new int[movementString.length];
-            for (int j = 0; j < movementString.length; j++) {
-                movementPattern[j] = Integer.parseInt(movementString[j]);
+            String[] movePatternStrings = splitData[2].split(",");
+            int[] movePatternInt = new int[movePatternStrings.length];
+            for (int j = 0; j < movePatternStrings.length; j++) {
+                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]);
             }
 
-            normalMonkeys[i - 1] = new NormalMonkey(x, y, !isRight, movementPattern);
+            normalMonkeys[i-1] = new NormalMonkey(x, y, isRight, movePatternInt);
         }
     }
 
     private void createIntelligentMonkeys() {
         int intelligentMonkeyCount = Integer.parseInt(GAME_PROPS.getProperty("intelligentMonkey.level2.count"));
         intelligentMonkeys = new IntelligentMonkey[intelligentMonkeyCount];
+
         for (int i = 1; i <= intelligentMonkeyCount; i++) {
-            String data = GAME_PROPS.getProperty("intelligentMonkey.level2." + i);
-            String[] splitData = data.split(";");
+            String propertyData = GAME_PROPS.getProperty("intelligentMonkey.level2." + i);
+            String[] splitData = propertyData.split(";");
 
             String[] coordinates = splitData[0].split(",");
             double x = Double.parseDouble(coordinates[0]);
             double y = Double.parseDouble(coordinates[1]);
 
-            boolean isRight = "right".equals(splitData[1]);
+            boolean isRight = splitData[1].equals("right");
 
-            String[] movementString = splitData[2].split(",");
-            int[] movementPattern = new int[movementString.length];
-            for (int j = 0; j < movementString.length; j++) {
-                movementPattern[j] = Integer.parseInt(movementString[j]);
+            String[] movePatternStrings = splitData[2].split(",");
+            int[] movePatternInt = new int[movePatternStrings.length];
+            for (int j = 0; j < movePatternStrings.length; j++) {
+                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]);
             }
 
-            intelligentMonkeys[i - 1] = new IntelligentMonkey(x, y, !isRight, movementPattern);
+            intelligentMonkeys[i-1] = new IntelligentMonkey(x, y, isRight, movePatternInt);
         }
     }
 

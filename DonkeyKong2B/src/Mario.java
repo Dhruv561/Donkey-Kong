@@ -30,7 +30,7 @@ public class Mario extends Entity implements Attackable {
     }
 
     @Override
-    public void updateSprite() {
+    protected void updateSprite() {
         // 1) Remember the old image and its bottom
         double oldBottom = getBottomY();
 
@@ -52,7 +52,7 @@ public class Mario extends Entity implements Attackable {
         setHeight(getHeight());
     }
 
-    public void touchingHammer(Hammer hammer) {
+    private void touchingHammer(Hammer hammer) {
         if (isTouching(hammer)) {
             this.hasHammer = true;
             this.hasBlaster = false;
@@ -60,7 +60,7 @@ public class Mario extends Entity implements Attackable {
         }
     }
 
-    public void touchingBlaster(Blaster[] blasters) {
+    private void touchingBlaster(Blaster[] blasters) {
         for (Blaster blaster : blasters) {
             if (isTouching(blaster)) {
                 this.hasBlaster = true;
@@ -87,7 +87,7 @@ public class Mario extends Entity implements Attackable {
         return this.bulletsRemaining;
     }
 
-    public double getMaxJumpHeight() {
+    private double getMaxJumpHeight() {
         return Math.abs((Math.pow(FINAL_JUMP_VELOCITY, 2) - Math.pow(INITIAL_JUMP_VELOCITY, 2)) / (2 * MARIO_GRAVITY));
     }
 
@@ -127,7 +127,7 @@ public class Mario extends Entity implements Attackable {
             return inlineWithBarrel && overBarrel && inJumpingRange;
     }
 
-    public boolean climbLadder(Input input, Ladder[] ladders) {
+    private boolean climbLadder(Input input, Ladder[] ladders) {
         boolean isOnLadder = false;
         for (Ladder ladder : ladders) {
             if (isTouching(ladder)) {
@@ -255,7 +255,9 @@ public class Mario extends Entity implements Attackable {
         display();
     }
 
-    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Barrel[] barrels, Blaster[] blaster, NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
+    public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Blaster[] blaster,
+                       NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong,
+                       GameStats stats) {
         moveHorizontal(input);
         touchingHammer(hammer);
         touchingBlaster(blaster);

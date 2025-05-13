@@ -35,7 +35,8 @@ public class Bullet extends GameObject {
         }
     }
 
-    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
+    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
+                                 DonkeyKong donkeyKong, GameStats stats) {
         for (NormalMonkey monkey : normalMonkeys) {
             if (isTouching(monkey)) {
                 monkey.destroy();
@@ -58,7 +59,8 @@ public class Bullet extends GameObject {
         }
     }
 
-    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong, GameStats stats) {
+    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
+                       DonkeyKong donkeyKong, GameStats stats) {
         if (Math.abs(startingX - getCentreX()) >= MAXIMUM_PIXELS) {
             destroy();
         } else {
