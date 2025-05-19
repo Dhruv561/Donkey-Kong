@@ -1,7 +1,10 @@
 import bagel.*;
 
+/**
+ * This class {@code GameObject} and is responsible for initialising,
+ * rendering, moving and handling entity interaction for bananas.
+ */
 public class Bullet extends GameObject {
-    private boolean isDestroyed = false;
     private boolean isRight = false;
     private double startingX;
     private final static Image LEFT_SPRITE = new Image("res/bullet_left.png");
@@ -10,34 +13,31 @@ public class Bullet extends GameObject {
     private final static int BULLET_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 3.8;
     private final static double MAXIMUM_PIXELS = 300;
-    private final static int OFFSCREEN = -100;
 
+    /**
+     * Initialising bullet with position coordinates, direction, sprite and gravity values
+     * @param centreX centre x coordinate
+     * @param centreY centre y coordinate
+     * @param isRight is facing right
+     */
     public Bullet(double centreX, double centreY, boolean isRight) {
         super(centreX, centreY, isRight ? RIGHT_SPRITE : LEFT_SPRITE, BULLET_GRAVITY, BULLET_TERMINAL_VELOCITY);
         this.isRight = isRight;
         this.startingX = getCentreX();
     }
 
-    public boolean isDestroyed() {
-        return this.isDestroyed;
-    }
-
-    private void destroy() {
-        this.isDestroyed = true;
-        setCentreY(OFFSCREEN);
-        setCentreX(OFFSCREEN);
-    }
-
-    @Override
-    public void display() {
-        if (!isDestroyed) {
-            getSprite().draw(getCentreX(), getCentreY());
-        }
-    }
-
-    private void monkeyCollision(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
+    /**
+     * Checks for collision between both intelligent and normal monkeys. If there is
+     * a collision, both the monkey and bullet are destroyed and points are updated.
+     * If bullet hits donkey kong, his health is reduced and bullet is destroyed
+     * @param normalMonkeys array of normal monkeys
+     * @param intelligentMonkeys array of intelligent monkeys
+     * @param donkeyKong donkey kong
+     * @param stats game stats
+     */
+    private void monkeyCollision(Monkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
                                  DonkeyKong donkeyKong, GameStats stats) {
-        for (NormalMonkey monkey : normalMonkeys) {
+        for (Monkey monkey : normalMonkeys) {
             if (isTouching(monkey)) {
                 monkey.destroy();
                 stats.monkeyDestroyed();
@@ -59,7 +59,17 @@ public class Bullet extends GameObject {
         }
     }
 
-    public void update(NormalMonkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
+    /**
+     * Updates and renders bullet position if not destroyed, moving left
+     * or right based on its direction for at most MAXIMUM_PIXELS amount
+     * before being auto destroyed. Also hands interaction with monkeys and platforms.
+     * @param platforms array of platforms
+     * @param normalMonkeys array of normal monkeys
+     * @param intelligentMonkeys array of intelligent monkeys
+     * @param donkeyKong donkey kong
+     * @param stats game stats
+     */
+    public void update(Platform[] platforms, Monkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
                        DonkeyKong donkeyKong, GameStats stats) {
         if (Math.abs(startingX - getCentreX()) >= MAXIMUM_PIXELS) {
             destroy();
@@ -71,7 +81,12 @@ public class Bullet extends GameObject {
             }
         }
         if (getCentreX() >= ShadowDonkeyKong.getScreenWidth() || getCentreX() <= 0) {
-            isDestroyed = true;
+            destroy();
+        }
+        for (Platform platform : platforms) {
+            if (isTouching(platform)) {
+                destroy();
+            }
         }
         monkeyCollision(normalMonkeys, intelligentMonkeys, donkeyKong, stats);
         display();

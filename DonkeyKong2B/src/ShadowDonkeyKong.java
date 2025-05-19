@@ -4,7 +4,7 @@ import java.util.Properties;
 /**
  * The main class for the Shadow Donkey Kong game.
  * This class extends {@code AbstractGame} and is responsible for managing game
- * states and switching between start, game and end screens.
+ * states and switching between start, level and end screens.
  */
 public class ShadowDonkeyKong extends AbstractGame {
 
@@ -36,14 +36,6 @@ public class ShadowDonkeyKong extends AbstractGame {
         screenHeight = Integer.parseInt(gameProps.getProperty("window.height"));
     }
 
-    public Properties getGameProps() {
-        return this.GAME_PROPS;
-    }
-
-    public Properties getMessageProps() {
-        return this.MESSAGE_PROPS;
-    }
-
     /**
      * Render the relevant screen based on the keyboard input given by the user and the status of the gameplay.
      * @param input The current mouse/keyboard input.
@@ -73,8 +65,8 @@ public class ShadowDonkeyKong extends AbstractGame {
             levelOne.update(input);
 
             // game is over
-            if (levelOne.gameOver()) {
-                if (levelOne.gameWon()) {
+            if (levelOne.getGameOver()) {
+                if (levelOne.getGameWon()) {
                     levelOneComplete = true;
                     int points = levelOne.getPoints();
                     levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points);
@@ -88,8 +80,8 @@ public class ShadowDonkeyKong extends AbstractGame {
             levelTwo.update(input);
 
             // game is over
-            if (levelTwo.gameOver()) {
-                if (levelTwo.gameWon()) {
+            if (levelTwo.getGameOver()) {
+                if (levelTwo.getGameWon()) {
                     levelTwoComplete = true;
                 }
                 gameOver = true;
@@ -120,7 +112,6 @@ public class ShadowDonkeyKong extends AbstractGame {
 
     /**
      * Retrieves the width of the game screen.
-     *
      * @return The width of the screen in pixels.
      */
     public static double getScreenWidth() {
@@ -129,7 +120,6 @@ public class ShadowDonkeyKong extends AbstractGame {
 
     /**
      * Retrieves the height of the game screen.
-     *
      * @return The height of the screen in pixels.
      */
     public static double getScreenHeight() {

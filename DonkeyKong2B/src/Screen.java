@@ -3,11 +3,11 @@ import java.util.Properties;
 
 /**
  * Abstract screen class made to initialise, draw game background
- * and child screens such as start screen, end screen and game screen
+ * and child screens such as start screen, end screen and level screens
  */
 public abstract class Screen {
-    protected final Properties GAME_PROPS;
-    protected final Properties MESSAGE_PROPS;
+    private final Properties GAME_PROPS;
+    private final Properties MESSAGE_PROPS;
 
     /**
      * Initialises screen based on game and message properties
@@ -17,6 +17,22 @@ public abstract class Screen {
     public Screen (Properties gameProps, Properties messageProps) {
         this.GAME_PROPS = gameProps;
         this.MESSAGE_PROPS = messageProps;
+    }
+
+    /**
+     * Returns game props
+     * @return game props
+     */
+    public Properties getGAME_PROPS() {
+        return GAME_PROPS;
+    }
+
+    /**
+     * Returns message props
+     * @return message props
+     */
+    public Properties getMESSAGE_PROPS() {
+        return MESSAGE_PROPS;
     }
 
     /**
