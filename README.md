@@ -17,3 +17,6 @@ Assumptions:
   would result in the game not being lost.
 - If mario has a gun and then picks up a hammer, his bullets are set to 0. If he then picks up another gun,
   his bullets are set to 5 not 10.
+- If mario is holding a hammer and runs into a banana, the hammer will not destroy the banana and the game
+  will be lost.
+- If mario fires a bullet at a banana, the projectiles will not collide and destroy each other. 
