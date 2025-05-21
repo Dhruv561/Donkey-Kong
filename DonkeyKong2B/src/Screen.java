@@ -39,6 +39,7 @@ public abstract class Screen {
      * Draws background image constant across all screens based on window dimensions
      */
     public void drawBackground() {
+        // draws black background in centre of screen
         Image background = new Image(GAME_PROPS.getProperty("backgroundImage"));
         double x = Integer.parseInt(GAME_PROPS.getProperty("window.width"));
         double y = Integer.parseInt(GAME_PROPS.getProperty("window.height"));
@@ -57,6 +58,7 @@ public abstract class Screen {
      * @return double which is x coordinate where the text is centered on screen
      */
     public double getCenterX(Font font, String string) {
+        // returns the centre x coordinate for text based on font size
         return (Integer.parseInt(GAME_PROPS.getProperty("window.width")) - font.getWidth(string)) / 2.0;
     }
 }

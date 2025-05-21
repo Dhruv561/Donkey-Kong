@@ -13,8 +13,8 @@ public class StartScreen extends Screen {
     /**
      * Initialises start screen based off game and message properties by setting the start
      * screens title and prompt text and loading the font
-     * @param gameProps
-     * @param messageProps
+     * @param gameProps game props
+     * @param messageProps message props
      */
     public StartScreen(Properties gameProps, Properties messageProps) {
         super(gameProps, messageProps);

@@ -32,7 +32,7 @@ public class Mario extends Entity implements Attackable {
     /**
      * Initialises mario based off position coordinates, sprite and gravity values
      * @param centreX centre x coordinate
-     * @param centreY centre y coordiante
+     * @param centreY centre y coordinate
      */
     public Mario(double centreX, double centreY) {
         super(centreX, centreY, LEFT_SPRITE, RIGHT_SPRITE, MARIO_GRAVITY, MARIO_TERMINAL_VELOCITY);
@@ -45,10 +45,10 @@ public class Mario extends Entity implements Attackable {
      */
     @Override
     protected void updateSprite() {
-        // 1) Remember the old image and its bottom
+        // remember the old image and its bottom
         double oldBottom = getBottomY();
 
-        // 2) Assign the new image based on direction facing, hammer and blaster
+        // assign the new image based on direction facing, hammer and blaster
         if (hasHammer) {
             setSprite(isRight() ? RIGHT_HAMMER_SPRITE : LEFT_HAMMER_SPRITE);
         } else if (hasBlaster) {
@@ -57,11 +57,11 @@ public class Mario extends Entity implements Attackable {
             setSprite(isRight() ? RIGHT_SPRITE : LEFT_SPRITE);
         }
 
-        // 4) Shift 'y' so the bottom edge is the same as before
-        //    (If new sprite is taller, we move Mario up so he doesn't sink into platforms)
+        // shift 'y' so the bottom edge is the same as before
+        // (if new sprite is taller, we move Mario up so he doesn't sink into platforms)
         setCentreY(getCentreY() - (getBottomY() - oldBottom));
 
-        // 5) Update the recorded width/height to match the new image
+        // update the recorded width/height to match the new image
         setWidth(getSprite().getWidth());
         setHeight(getHeight());
     }
@@ -72,11 +72,12 @@ public class Mario extends Entity implements Attackable {
      */
     private void touchingHammer(Hammer[] hammers) {
         for (Hammer hammer : hammers) {
+            // check if touching hammer
             if (isTouching(hammer)) {
-                this.hasHammer = true;
-                this.hasBlaster = false;
-                this.bulletsRemaining = 0;
-                hammer.collect();
+                this.hasHammer = true; // grab hammer
+                this.hasBlaster = false; // drop blaster
+                this.bulletsRemaining = 0; // reset bullet count
+                hammer.collect(); // collect hammer
             }
         }
 
@@ -84,15 +85,16 @@ public class Mario extends Entity implements Attackable {
 
     /**
      * Checks if mario is touching a blaster and if it is, increases bullets and collects blaster
-     * @param blasters
+     * @param blasters array of blasters
      */
     private void touchingBlaster(Blaster[] blasters) {
         for (Blaster blaster : blasters) {
+            // check if touching blaster
             if (isTouching(blaster)) {
-                this.hasBlaster = true;
-                this.hasHammer = false;
-                blaster.collect();
-                bulletsRemaining += BULLETS;
+                this.hasBlaster = true; // grab blaster
+                this.hasHammer = false; // drop hammer
+                blaster.collect(); // collect blaster
+                bulletsRemaining += BULLETS; // increase bullets
             }
         }
     }
@@ -133,6 +135,7 @@ public class Mario extends Entity implements Attackable {
      * @return maximum jump height
      */
     private double getMaxJumpHeight() {
+        // calculates maximum jump velocity
         return Math.abs((Math.pow(FINAL_JUMP_VELOCITY, 2) - Math.pow(INITIAL_JUMP_VELOCITY, 2)) / (2 * MARIO_GRAVITY));
     }
 
@@ -149,13 +152,15 @@ public class Mario extends Entity implements Attackable {
      */
     public void moveHorizontal(Input input) {
         if (input.isDown(Keys.LEFT)) {
-            setCentreX(getCentreX() - MOVE_VELOCITY);
-            setRight(false);
-            updateSprite();
+            // user wants to move left
+            setCentreX(getCentreX() - MOVE_VELOCITY); // move left
+            setRight(false); // face left
+            updateSprite(); // update sprite image
         } else if (input.isDown(Keys.RIGHT)) {
-            setCentreX(getCentreX() + MOVE_VELOCITY);
-            setRight(true);
-            updateSprite();
+            // user wants to move right
+            setCentreX(getCentreX() + MOVE_VELOCITY); // move right
+            setRight(true); // face right
+            updateSprite(); // update sprite image
         }
     }
 
@@ -166,14 +171,16 @@ public class Mario extends Entity implements Attackable {
      * @param wantsToJump boolean if mario wants to jump
      */
     private void jump(boolean onPlatform, boolean wantsToJump) {
+        // check if wants to jump and on platform
         if (onPlatform && wantsToJump) {
-            setVelocityY(INITIAL_JUMP_VELOCITY);
+            setVelocityY(INITIAL_JUMP_VELOCITY); // jump upwards
             isJumping = true;
         }
         if (getBottomY() > ShadowDonkeyKong.getScreenHeight()) {
-            setCentreY(ShadowDonkeyKong.getScreenHeight() - (getHeight() / 2));
-            setVelocityY(0);
-            isJumping = false;
+            // checks if mario has fallen through window bottom
+            setCentreY(ShadowDonkeyKong.getScreenHeight() - (getHeight() / 2)); // reset coordinates to remain onscreen
+            setVelocityY(0); // reset velocity to stop jumping
+            isJumping = false; // stop jumping
         }
     }
 
@@ -183,12 +190,13 @@ public class Mario extends Entity implements Attackable {
      * @return boolean if mario has jumped over barrel
      */
     public boolean jumpingOverBarrel(Barrel barrel) {
-            double jumpRange = barrel.getBottomY() - getMaxJumpHeight() - getHeight() / 2;
+            double jumpRange = barrel.getBottomY() - getMaxJumpHeight() - getHeight() / 2; // area above barrel
+            // marios x coordinate is in between barrel
             boolean inlineWithBarrel = barrel.getLeftX() <= getCentreX() && getCentreX() <= barrel.getRightX();
-            boolean overBarrel = getCentreY() < barrel.getTopY();
-            boolean inJumpingRange = getCentreY() >= jumpRange;
+            boolean overBarrel = getCentreY() < barrel.getTopY(); // marios y coordinate is over barrels
+            boolean inJumpingRange = getCentreY() >= jumpRange; // mario is in jumping range above barrel
 
-            return inlineWithBarrel && overBarrel && inJumpingRange;
+            return inlineWithBarrel && overBarrel && inJumpingRange; // mario jumping over barrel
     }
 
     /**
@@ -203,32 +211,32 @@ public class Mario extends Entity implements Attackable {
         boolean isOnLadder = false;
         for (Ladder ladder : ladders) {
             if (isTouching(ladder)) {
-                // Check horizontal overlap so Mario is truly on the ladder
+                // check horizontal overlap so Mario is truly on the ladder
                 if (ladder.getLeftX() <= getCentreX() && getCentreX() <= ladder.getRightX()) {
                     isOnLadder = true;
 
-                    // Stop Mario from sliding up when not moving
+                    // stop Mario from sliding up when not moving
                     if (!input.isDown(Keys.UP) && !input.isDown(Keys.DOWN)) {
                         setVelocityY(0);  // Prevent sliding inertia effect
                     }
 
-                    // ----------- Climb UP -----------
+                    // climb up platform
                     if (input.isDown(Keys.UP)) {
                         climbUp();
                     }
 
-                    // ----------- Climb DOWN -----------
+                    // climb down platform
                     if (input.isDown(Keys.DOWN)) {
                         climbDown(ladder);
                     }
                 }
             } else if (getBottomY() == ladder.getTopY() && input.isDown(Keys.DOWN) &&
                     (ladder.getLeftX() <= getCentreX() && getCentreX() <= ladder.getRightX())) {
-                // We're at the top of the ladder and pressing DOWN, so start climbing down
+                // mario at the top of the ladder and pressing DOWN, so start climbing down
                 double nextY = getCentreY() + LADDER_VELOCITY;
                 setCentreY(nextY);
                 setVelocityY(0); // ignore gravity
-                isOnLadder = true; // Mark as on ladder to ignore gravity effects
+                isOnLadder = true; // mark as on ladder to ignore gravity effects
             }
         }
         return isOnLadder;
@@ -238,8 +246,8 @@ public class Mario extends Entity implements Attackable {
      * Method to make mario climb up a ladder by changing his velocity nad position coordinates
      */
     private void climbUp() {
-        setCentreY(getCentreY() - LADDER_VELOCITY);
-        setVelocityY(0);
+        setCentreY(getCentreY() - LADDER_VELOCITY); // move up ladder
+        setVelocityY(0); // set velocity to avoid falling off
     }
 
     /**
@@ -248,18 +256,18 @@ public class Mario extends Entity implements Attackable {
      * @param ladder ladder object
      */
     private void climbDown(Ladder ladder) {
-        // Calculate the next Y position after moving down
+        // calculate the next Y position after moving down
         double nextY = getCentreY() + LADDER_VELOCITY;
-        // Calculate where the bottom of the player will be after moving
+        // calculate where the bottom of the player will be after moving
         double nextBottomY = nextY + (getBottomY() - getCentreY());
 
-        // Check if we're still within the ladder's bounds after moving
+        // check if we're still within the ladder's bounds after moving
         if (nextBottomY <= ladder.getBottomY()) {
-            // Safe to move down
+            // safe to move down
             setCentreY(nextY);
             setVelocityY(0);
         } else {
-            // Mario has moved past the bottom of ladder nad needs to be realigned
+            // mario has moved past the bottom of ladder nad needs to be realigned
             double adjustedY = getCentreY() + (ladder.getBottomY() - getBottomY());
             setCentreY(adjustedY);
             setVelocityY(0);
@@ -275,8 +283,7 @@ public class Mario extends Entity implements Attackable {
     private boolean fallToPlatform(Platform[] platforms, Hammer[] hammers) {
         boolean onPlatform = false;
 
-        // We'll only snap Mario to a platform if he's moving downward (velocityY >= 0)
-        // so we don't kill his jump in midair.
+        // only snap Mario to a platform if he's moving downward (velocityY >= 0) so we don't kill his jump in midair.
         if (getVelocityY() >= 0) {
             for (Platform platform : platforms) {
                 Rectangle marioBounds    = getBoundingBox();
@@ -286,15 +293,15 @@ public class Mario extends Entity implements Attackable {
                     double marioBottom = marioBounds.bottom();
                     double platformTop = platformBounds.top();
 
-                    // If Mario's bottom is at or above the platform's top
+                    // if Mario's bottom is at or above the platform's top
                     // and not far below it (a small threshold based on velocity)
                     if (marioBottom <= platformTop + getVelocityY()) {
-                        // Snap Mario so his bottom = the platform top
+                        // snap Mario so his bottom = the platform top
                         setCentreY(platformTop - (getHeight() / 2));
                         setVelocityY(0);
                         isJumping = false;
                         onPlatform = true;
-                        break; // We found a platform collision
+                        break; // we found a platform collision
                     }
                 }
             }
@@ -309,6 +316,7 @@ public class Mario extends Entity implements Attackable {
      */
     public boolean onPlatform(Platform[] platforms) {
         for (Platform platform : platforms) {
+            // check if mario's bottom is on top of platform so mario is on platform
             if (platform.getTopY() == getBottomY()) {
                 return true;
             }
@@ -328,10 +336,11 @@ public class Mario extends Entity implements Attackable {
      * @param input user input
      */
     public void launchProjectile(Input input) {
+        // check to see if we have bullets, blaster and user wants to shoot
         if (bulletsRemaining > 0 && input.wasPressed(Keys.S) && hasBlaster) {
-            bulletsRemaining -= 1;
-            Bullet bullet = new Bullet(getCentreX(), getCentreY(), isRight());
-            bullets.add(bullet);
+            bulletsRemaining -= 1; // decrease bullets
+            Bullet bullet = new Bullet(getCentreX(), getCentreY(), isRight()); // create new bullet
+            bullets.add(bullet); // add to bullet array
         }
     }
 
@@ -344,30 +353,30 @@ public class Mario extends Entity implements Attackable {
      * @param hammers array of all hammers
      */
     public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer[] hammers) {
-        moveHorizontal(input);
-        touchingHammer(hammers);
+        moveHorizontal(input); // move left or right based on user input
+        touchingHammer(hammers); // check if picked up hammer
 
         boolean isOnLadder;
-        isOnLadder = climbLadder(input, ladders);
+        isOnLadder = climbLadder(input, ladders); // check if mario on ladder
 
-        boolean wantsToJump = input.wasPressed(Keys.SPACE);
+        boolean wantsToJump = input.wasPressed(Keys.SPACE); // check if user wants to jump
 
         if (!isOnLadder) {
-            setVelocityY(getVelocityY() + MARIO_GRAVITY);
-            setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY()));
+            setVelocityY(getVelocityY() + MARIO_GRAVITY); // apply gravity to avoid levitating
+            setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY())); // ensure velocity doesn't exceed terminal
         }
 
-        setCentreY(getCentreY() + getVelocityY());
+        setCentreY(getCentreY() + getVelocityY()); // update y coordinate based on gravity
 
         boolean onPlatform;
-        onPlatform = fallToPlatform(platforms, hammers);
+        onPlatform = fallToPlatform(platforms, hammers); // check if mario is on platform
 
-        jump(onPlatform, wantsToJump);
+        jump(onPlatform, wantsToJump); // allow mario to jump
 
-        enforceBoundaries();
+        enforceBoundaries(); // enforce mario to stay within game window
 
-        updateSprite();
-        display();
+        updateSprite(); // update marios sprite based on direction and collectables
+        display(); // display
     }
 
     /**
@@ -386,37 +395,37 @@ public class Mario extends Entity implements Attackable {
     public void update(Input input, Platform[] platforms, Ladder[] ladders, Hammer[] hammers, Blaster[] blaster,
                        Monkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys, DonkeyKong donkeyKong,
                        GameStats stats) {
-        moveHorizontal(input);
-        touchingHammer(hammers);
-        touchingBlaster(blaster);
-        launchProjectile(input);
+        moveHorizontal(input);  // move left or right based on user input
+        touchingHammer(hammers); // check if picked up hammer
+        touchingBlaster(blaster); // check if picked up blaster
+        launchProjectile(input); // launch bullets based on input
 
         for (Bullet bullet : bullets) {
             if (!bullet.isDestroyed()) {
-                bullet.update(platforms, normalMonkeys, intelligentMonkeys, donkeyKong, stats);
+                bullet.update(platforms, normalMonkeys, intelligentMonkeys, donkeyKong, stats); // update bullet status
             }
         }
 
         boolean isOnLadder;
-        isOnLadder = climbLadder(input, ladders);
+        isOnLadder = climbLadder(input, ladders); // check if mario on ladder
 
-        boolean wantsToJump = input.wasPressed(Keys.SPACE);
+        boolean wantsToJump = input.wasPressed(Keys.SPACE); // allow mario to jump
 
         if (!isOnLadder) {
-            setVelocityY(getVelocityY() + MARIO_GRAVITY);
-            setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY()));
+            setVelocityY(getVelocityY() + MARIO_GRAVITY); // apply gravity to avoid levitating
+            setVelocityY(Math.min(MARIO_TERMINAL_VELOCITY, getVelocityY())); // ensure velocity doesn't exceed terminal
         }
 
-        setCentreY(getCentreY() + getVelocityY());
+        setCentreY(getCentreY() + getVelocityY()); // update y coordinate based on gravity
 
         boolean onPlatform;
-        onPlatform = fallToPlatform(platforms, hammers);
+        onPlatform = fallToPlatform(platforms, hammers); // check if mario is on platform
 
-        jump(onPlatform, wantsToJump);
+        jump(onPlatform, wantsToJump); // allow mario to jump
 
-        enforceBoundaries();
+        enforceBoundaries();  // enforce mario to stay within game window
 
-        updateSprite();
-        display();
+        updateSprite(); // update marios sprite based on direction and collectables
+        display(); // display
     }
 }

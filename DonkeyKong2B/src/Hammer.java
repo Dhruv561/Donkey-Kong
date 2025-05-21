@@ -8,7 +8,7 @@ public class Hammer extends GameObject implements Collectable {
     private boolean isCollected = false;
     private final static double GRAVITY = 0;
     private static final double HAMMER_TERMINAL_VELOCITY = 0;
-    private final static int OFFSCREEN = -1000;
+    private final static int OFFSCREEN = -1000; // pixel coordinates which are offscreen
 
     /**
      * Initialising hammer with position coordinates, sprite and gravity values
@@ -24,6 +24,7 @@ public class Hammer extends GameObject implements Collectable {
      */
     @Override
     public void collect() {
+        // move hammer offscreen
         this.isCollected = true;
         setCentreX(OFFSCREEN);
         setCentreY(OFFSCREEN);

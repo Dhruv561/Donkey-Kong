@@ -29,8 +29,10 @@ public class LevelTwo extends GameScreen {
      */
     @Override
     public void loadLevel() {
+        // create mario at appropriate coordinates
         setMario(new Mario(Integer.parseInt(getGAME_PROPS().getProperty("mario.level2").split(",")[0]),
                 Integer.parseInt(getGAME_PROPS().getProperty("mario.level2").split(",")[1])));
+        // create donkey kong at appropriate coordinates
         setDonkeyKong(new DonkeyKong(Integer.parseInt(getGAME_PROPS().getProperty("donkey.level2").split(",")[0]),
                 Integer.parseInt(getGAME_PROPS().getProperty("donkey.level2").split(",")[1])));
         createPlatforms(LEVEL);
@@ -58,67 +60,83 @@ public class LevelTwo extends GameScreen {
      */
     @Override
     public void checkGameStatus() {
+        // mario is touching donkey kong
         if (getMario().isTouching(getDonkeyKong())) {
             if (getMario().hasHammer()) {
-                setGameWon(true);
-                getStats().timeMultiplier();
+                // mario touches donkey kong with hammer
+                setGameWon(true); // game is won
+                getStats().timeMultiplier(); // time multiplier is added
             } else {
-                setGameWon(false);
+                // mario is touching donkey kong without hammer
+                setGameWon(false); // game is lost
             }
-            setGameOver(true);
+            setGameOver(true); // game is over
         }
 
+        // donkey kong has no more health and game is won
         if (getDonkeyKong().getHealth() <= 0) {
             setGameWon(true);
             setGameOver(true);
         }
 
+        // mario has been hit by bullet and game is lost
         if (getMario().isHit()) {
             setGameWon(false);
             setGameOver(true);
         }
 
+        // mario is touching barrel
         for (Barrel barrel : getBarrels()) {
             if (getMario().isTouching(barrel)) {
                 if (getMario().hasHammer()) {
-                    getStats().barrelDestroyed();
-                    barrel.destroy();
+                    // mario has hammer and destroys barrel
+                    getStats().barrelDestroyed(); // increase points
+                    barrel.destroy(); // destroy barrel
                 } else {
-                    setGameWon(false);
-                    setGameOver(true);
+                    // mario is touching barrel without hammer
+                    setGameWon(false); // game is lost
+                    setGameOver(true); // game is over
                 }
             }
         }
 
+        // mario is touching monkey
         for (Monkey monkey : getNormalMonkeys()) {
             if (getMario().isTouching(monkey)) {
                 if (getMario().hasHammer()) {
-                    getStats().monkeyDestroyed();
+                    // mario touching monkey with hammer so monkey is destroyed
+                    getStats().monkeyDestroyed(); // increase points
                     monkey.destroy();
                 } else {
-                    setGameWon(false);
-                    setGameOver(true);
+                    // mario is touching monkey without hammer
+                    setGameWon(false); // game is lost
+                    setGameOver(true); // game is over
                 }
             }
         }
 
+        // mario is touching intelligent monkey
         for (IntelligentMonkey monkey : getIntelligentMonkeys()) {
             if (getMario().isTouching(monkey)) {
+                // mario touching monkey with hammer so monkey is destroyed
                 if (getMario().hasHammer()) {
-                    getStats().monkeyDestroyed();
+                    getStats().monkeyDestroyed(); // increase points
                     monkey.destroy();
                 } else {
-                    setGameWon(false);
-                    setGameOver(true);
+                    // mario is touching monkey without hammer
+                    setGameWon(false); // game is lost
+                    setGameOver(true); // game is over
                 }
             }
         }
 
+        // remaining time has run out so game is lost
         if (getStats().getRemainingTime() <= 0) {
             setGameWon(false);
             setGameOver(true);
         }
 
+        // set points to 0 if game is lost
         if (getGameOver() && !getGameWon()) {
             getStats().setPoints(0);
         }
@@ -131,49 +149,54 @@ public class LevelTwo extends GameScreen {
      */
     @Override
     public void update(Input input) {
-        drawBackground();
+        drawBackground(); // draw black background
+
         for (Platform platform : getPlatforms()) {
-            platform.display();
+            platform.display(); // display platforms
         }
 
         for (Barrel barrel: getBarrels()) {
             if (getMario().jumpingOverBarrel(barrel) && !barrel.isDestroyed()) {
-                getStats().jumpedOver();
-                getStats().changeBarrelScore(false);
+                // mario is jumping over barrel
+                getStats().jumpedOver(); // add points
+                getStats().changeBarrelScore(false); // stop adding points whilst midair
             }
-            barrel.update(getPlatforms());
+            barrel.update(getPlatforms()); // update barrel status
         }
 
         for (Ladder ladder: getLadders()) {
-            ladder.display();
+            ladder.update(getPlatforms()); // update ladder status
         }
 
         for (Blaster blaster: getBlasters()) {
-            blaster.display();
+            blaster.display(); // display blasters
         }
 
-        getDonkeyKong().update(getPlatforms());
+        getDonkeyKong().update(getPlatforms()); // update donkey kong status
 
         for (IntelligentMonkey monkey : getIntelligentMonkeys()) {
-            monkey.update(getPlatforms(), getMario(), getStats());
+            monkey.update(getPlatforms(), getMario(), getStats()); // update intelligent monkey status
         }
 
         for (Monkey monkey : getNormalMonkeys()) {
-            monkey.update(getPlatforms());
+            monkey.update(getPlatforms()); // update normal monkey status
         }
 
         for (Hammer hammer : getHammers()) {
-            hammer.display();
+            hammer.display(); // display hammer
         }
 
         getMario().update(input, getPlatforms(), getLadders(), getHammers(), getBlasters(), getNormalMonkeys(),
-                getIntelligentMonkeys(), getDonkeyKong(), getStats());
+                getIntelligentMonkeys(), getDonkeyKong(), getStats()); // update mario status
 
+        // check if mario is on platform
         if (getMario().onPlatform(getPlatforms())) {
+            // allow mario to gain points jumping over barrels now he is on a platform and not midair
             getStats().changeBarrelScore(true);
         }
-        getStats().display(getDonkeyKong().getHealth(), getMario().getBullets());
-        getStats().increaseFrame();
-        checkGameStatus();
+
+        getStats().display(getDonkeyKong().getHealth(), getMario().getBullets()); // display game stats
+        getStats().increaseFrame(); // increase time played
+        checkGameStatus(); // check if game is over
     }
 }

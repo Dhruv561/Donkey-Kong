@@ -192,13 +192,13 @@ public abstract class GameScreen extends Screen {
      * @param level current game level
      */
     public void createPlatforms(int level) {
+        // gets and stores platform coordinates as array of strings
         String[] platformCoordinates = getGAME_PROPS().getProperty("platforms.level" + level).split(";");
-        platforms = new Platform[platformCoordinates.length];
-
+        platforms = new Platform[platformCoordinates.length]; // creates new array of platforms
         for (int i = 0; i < platformCoordinates.length; i++) {
-            double x = Integer.parseInt(platformCoordinates[i].split(",")[0]);
-            double y = Integer.parseInt(platformCoordinates[i].split(",")[1]);
-            platforms[i] = new Platform(x, y);
+            double x = Integer.parseInt(platformCoordinates[i].split(",")[0]); // get platform x coordinate
+            double y = Integer.parseInt(platformCoordinates[i].split(",")[1]); // get platform y coordinate
+            platforms[i] = new Platform(x, y); // create new platform inside array
         }
     }
 
@@ -207,12 +207,15 @@ public abstract class GameScreen extends Screen {
      * @param level current game level
      */
     public void createBarrels(int level) {
+        // get number of barrels required
         int barrelCount = Integer.parseInt(getGAME_PROPS().getProperty("barrel.level" + level + ".count"));
-        barrels = new Barrel[barrelCount];
+        barrels = new Barrel[barrelCount]; // creates new array of barrels
         for (int i = 1; i <= barrelCount; i++) {
-            double x = Integer.parseInt(getGAME_PROPS().getProperty("barrel.level" + level + "." + i).split(",")[0]);
-            double y = Integer.parseInt(getGAME_PROPS().getProperty("barrel.level" + level + "." + i).split(",")[1]);
-            barrels[i - 1] = new Barrel(x, y);
+            double x = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "barrel.level" + level + "." + i).split(",")[0]); // get x coordinate of barrel
+            double y = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "barrel.level" + level + "." + i).split(",")[1]); // get y coordinate of barrel
+            barrels[i - 1] = new Barrel(x, y); // create new barrel inside of array
         }
     }
 
@@ -221,12 +224,15 @@ public abstract class GameScreen extends Screen {
      * @param level current game level
      */
     public void createHammers(int level) {
+        // get number of hammers required
         int hammerCount = Integer.parseInt(getGAME_PROPS().getProperty("hammer.level" + level + ".count"));
-        hammers = new Hammer[hammerCount];
+        hammers = new Hammer[hammerCount]; // creates new array of hammers
         for (int i = 1; i <= hammerCount; i++) {
-            double x = Integer.parseInt(getGAME_PROPS().getProperty("hammer.level" + level + "." + i).split(",")[0]);
-            double y = Integer.parseInt(getGAME_PROPS().getProperty("hammer.level" + level + "." + i).split(",")[1]);
-            hammers[i - 1] = new Hammer(x, y);
+            double x = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "hammer.level" + level + "." + i).split(",")[0]); // get x coordinate of hammer
+            double y = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "hammer.level" + level + "." + i).split(",")[1]); // get y coordinate of hammer
+            hammers[i - 1] = new Hammer(x, y); // create new hammer inside of array
         }
     }
 
@@ -235,12 +241,15 @@ public abstract class GameScreen extends Screen {
      * @param level current game level
      */
     public void createLadders(int level) {
+        // get number of ladders required
         int ladderCount = Integer.parseInt(getGAME_PROPS().getProperty("ladder.level" + level + ".count"));
-        ladders = new Ladder[ladderCount];
+        ladders = new Ladder[ladderCount]; // creates new array of ladders
         for (int i = 1; i <= ladderCount; i++) {
-            double x = Integer.parseInt(getGAME_PROPS().getProperty("ladder.level" + level + "." + i).split(",")[0]);
-            double y = Integer.parseInt(getGAME_PROPS().getProperty("ladder.level" + level + "." + i).split(",")[1]);
-            ladders[i - 1] = new Ladder(x, y);
+            double x = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "ladder.level" + level + "." + i).split(",")[0]); // get x coordinate of ladder
+            double y = Integer.parseInt(getGAME_PROPS().getProperty(
+                    "ladder.level" + level + "." + i).split(",")[1]); // get y coordinate of ladder
+            ladders[i - 1] = new Ladder(x, y); // create new ladder inside of array
         }
     }
 
@@ -248,12 +257,15 @@ public abstract class GameScreen extends Screen {
      * Initialises blasters for level
      */
     public void createBlasters() {
+        // get number of blasters required
         int blasterCount = Integer.parseInt(getGAME_PROPS().getProperty("blaster.level2.count"));
-        blasters = new Blaster[blasterCount];
+        blasters = new Blaster[blasterCount]; // creates new array of blasters
         for (int i = 1; i <= blasterCount; i++) {
+            // get x coordinate of blaster
             double x = Integer.parseInt(getGAME_PROPS().getProperty("blaster.level2." + i).split(",")[0]);
+            // get y coordinate of blaster
             double y = Integer.parseInt(getGAME_PROPS().getProperty("blaster.level2." + i).split(",")[1]);
-            blasters[i - 1] = new Blaster(x, y);
+            blasters[i - 1] = new Blaster(x, y); // create new blaster inside of array
         }
     }
 
@@ -261,26 +273,27 @@ public abstract class GameScreen extends Screen {
      * Initialises normal monkeys for level
      */
     private void createNormalMonkeys() {
+        // get number of monkeys required
         int normalMonkeyCount = Integer.parseInt(getGAME_PROPS().getProperty("normalMonkey.level2.count"));
-        normalMonkeys = new Monkey[normalMonkeyCount];
+        normalMonkeys = new Monkey[normalMonkeyCount]; // creates new array of monkeys
 
         for (int i = 1; i <= normalMonkeyCount; i++) {
-            String propertyData = getGAME_PROPS().getProperty("normalMonkey.level2." + i);
-            String[] splitData = propertyData.split(";");
+            String propertyData = getGAME_PROPS().getProperty("normalMonkey.level2." + i); // gets monkey data
+            String[] splitData = propertyData.split(";"); // splits data based on category
 
-            String[] coordinates = splitData[0].split(",");
-            double x = Double.parseDouble(coordinates[0]);
-            double y = Double.parseDouble(coordinates[1]);
+            String[] coordinates = splitData[0].split(","); // splits data to get coordinates as strings
+            double x = Double.parseDouble(coordinates[0]); // gets x coordinate
+            double y = Double.parseDouble(coordinates[1]); // gets y coordinate
 
-            boolean isRight = splitData[1].equals("right");
+            boolean isRight = splitData[1].equals("right"); // checks to see if direction is facing right
 
-            String[] movePatternStrings = splitData[2].split(",");
-            int[] movePatternInt = new int[movePatternStrings.length];
+            String[] movePatternStrings = splitData[2].split(","); // splits data to get movement pattern
+            int[] movePatternInt = new int[movePatternStrings.length]; // creates array of integers
             for (int j = 0; j < movePatternStrings.length; j++) {
-                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]);
+                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]); // adds movement pattern to integer array
             }
 
-            normalMonkeys[i-1] = new Monkey(x, y, isRight, movePatternInt);
+            normalMonkeys[i-1] = new Monkey(x, y, isRight, movePatternInt); // initialises monkey
         }
     }
 
@@ -288,26 +301,27 @@ public abstract class GameScreen extends Screen {
      * Initialises intelligent monkeys for level
      */
     private void createIntelligentMonkeys() {
+        // get number of monkeys required
         int intelligentMonkeyCount = Integer.parseInt(getGAME_PROPS().getProperty("intelligentMonkey.level2.count"));
-        intelligentMonkeys = new IntelligentMonkey[intelligentMonkeyCount];
+        intelligentMonkeys = new IntelligentMonkey[intelligentMonkeyCount]; // creates new array of monkeys
 
         for (int i = 1; i <= intelligentMonkeyCount; i++) {
-            String propertyData = getGAME_PROPS().getProperty("intelligentMonkey.level2." + i);
-            String[] splitData = propertyData.split(";");
+            String propertyData = getGAME_PROPS().getProperty("intelligentMonkey.level2." + i); // gets monkey data
+            String[] splitData = propertyData.split(";"); // splits data based on category
 
-            String[] coordinates = splitData[0].split(",");
-            double x = Double.parseDouble(coordinates[0]);
-            double y = Double.parseDouble(coordinates[1]);
+            String[] coordinates = splitData[0].split(","); // splits data to get coordinates as strings
+            double x = Double.parseDouble(coordinates[0]); // gets x coordinate
+            double y = Double.parseDouble(coordinates[1]); // gets y coordinate
 
-            boolean isRight = splitData[1].equals("right");
+            boolean isRight = splitData[1].equals("right"); // checks to see if direction is facing right
 
-            String[] movePatternStrings = splitData[2].split(",");
-            int[] movePatternInt = new int[movePatternStrings.length];
+            String[] movePatternStrings = splitData[2].split(","); // splits data to get movement pattern
+            int[] movePatternInt = new int[movePatternStrings.length]; // creates array of integers
             for (int j = 0; j < movePatternStrings.length; j++) {
-                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]);
+                movePatternInt[j] = Integer.parseInt(movePatternStrings[j]); // adds movement pattern to integer array
             }
 
-            intelligentMonkeys[i-1] = new IntelligentMonkey(x, y, isRight, movePatternInt);
+            intelligentMonkeys[i-1] = new IntelligentMonkey(x, y, isRight, movePatternInt); // initialises monkey
         }
     }
 

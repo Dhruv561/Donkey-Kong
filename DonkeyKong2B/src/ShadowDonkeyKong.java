@@ -7,8 +7,6 @@ import java.util.Properties;
  * states and switching between start, level and end screens.
  */
 public class ShadowDonkeyKong extends AbstractGame {
-
-
     private final Properties GAME_PROPS;
     private final Properties MESSAGE_PROPS;
     private final StartScreen START_SCREEN;
@@ -31,7 +29,6 @@ public class ShadowDonkeyKong extends AbstractGame {
         this.MESSAGE_PROPS = messageProps;
         this.START_SCREEN = new StartScreen(GAME_PROPS, MESSAGE_PROPS);
         this.levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
-        //this.levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS);
         screenWidth = Integer.parseInt(gameProps.getProperty("window.width"));
         screenHeight = Integer.parseInt(gameProps.getProperty("window.height"));
     }
@@ -49,63 +46,71 @@ public class ShadowDonkeyKong extends AbstractGame {
         // show start screen if game hasn't started
         if (!gameStarted && !gameOver) {
             START_SCREEN.display();
-            // start the game if enter is pressed
+            // load level 1 if enter or 1 is pressed
             if (!gameStarted && (input.wasPressed(Keys.ENTER) || input.wasPressed(Keys.NUM_1))) {
                 gameStarted = true;
+                // load level 2 if 2 is pressed
             } else if (!gameStarted && input.wasPressed(Keys.NUM_2)) {
                 gameStarted = true;
-                levelOneComplete = true;
+                levelOneComplete = true; // set level one to complete
                 int points = levelOne.getPoints();
-                levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points);
+                levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points); // create level 2 based off level 1 points
             }
         }
 
-        // show game screen where main gameplay occurs
+        // show game screen where main gameplay occurs for level 1
         if (gameStarted && !gameOver && !levelOneComplete) {
             levelOne.update(input);
 
-            // game is over
+            // level 1 is over
             if (levelOne.getGameOver()) {
                 if (levelOne.getGameWon()) {
+                    // level 1 is successfully completed
                     levelOneComplete = true;
                     int points = levelOne.getPoints();
-                    levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points);
+                    levelTwo = new LevelTwo(GAME_PROPS, MESSAGE_PROPS, points); // initialise level 2
                 } else {
+                    // level 1 is lost
                     gameOver = true;
                 }
             }
         }
 
+        // show game screen for level 2
         if (gameStarted && !gameOver && levelOneComplete && !levelTwoComplete) {
             levelTwo.update(input);
 
-            // game is over
+            // level 2 is over
             if (levelTwo.getGameOver()) {
                 if (levelTwo.getGameWon()) {
+                    // level two is won
                     levelTwoComplete = true;
                 }
                 gameOver = true;
             }
         }
 
+        // game has ended
         if (gameOver) {
-            // display end screen
             int points;
             if (levelOneComplete && levelTwoComplete) {
+                // both levels are successfully completed
                 points = levelTwo.getPoints();
             } else  {
+                // either level has been failed
                 points = 0;
             }
 
+            // create and display endscreen
             endScreen = new EndScreen(levelTwoComplete, points, GAME_PROPS, MESSAGE_PROPS);
             endScreen.display();
             if (input.wasPressed(Keys.SPACE)) {
-                // restart game and go to start screen
+                // restart game by resetting variables and go to start screen
                 gameOver = false;
                 gameStarted = false;
                 levelOneComplete = false;
                 levelTwoComplete = false;
-                levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS);
+                levelOne = new LevelOne(GAME_PROPS, MESSAGE_PROPS); // create new level 1
             }
         }
     }

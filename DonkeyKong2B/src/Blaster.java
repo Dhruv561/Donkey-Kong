@@ -6,7 +6,7 @@ import bagel.*;
  */
 public class Blaster extends GameObject implements Collectable {
     private boolean isCollected = false;
-    private final static int OFFSCREEN = -100;
+    private final static int OFFSCREEN = -100; // pixel coordinates which are offscreen
     private final static int BLASTER_GRAVITY = 0;
     private final static int BLASTER_TERMINAL_VELOCITY = 0;
 
@@ -34,6 +34,7 @@ public class Blaster extends GameObject implements Collectable {
      */
     @Override
     public void collect() {
+        // move blaster offscreen
         this.isCollected = true;
         setCentreX(OFFSCREEN);
         setCentreY(OFFSCREEN);

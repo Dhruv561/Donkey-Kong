@@ -9,6 +9,7 @@ import java.util.Properties;
  */
 public class GameStats {
     private int points = 0;
+    // boolean to track if points should be added when jumping over barrels to avoid double counting
     private boolean barrelJump = true;
     private final static int DESTROY_BARREL = 100;
     private final static int BARREL_JUMP_OVER = 30;
@@ -19,6 +20,7 @@ public class GameStats {
     private final int MAX_FRAME;
     private final static int SECOND = 60;
 
+    // x and y coordinates for text
     private double scoreX, scoreY;
     private double timeX, timeY;
     private double healthX, healthY;
@@ -27,7 +29,7 @@ public class GameStats {
     private final Font FONT;
     private final Properties GAME_PROPS;
     private final Properties MESSAGE_PROPS;
-    private final static int OFFSHIFT = 30;
+    private final static int OFFSHIFT = 30; // pixel amount in text offshift
 
     /**
      * Initialises fonts, x and y coordinates for displaying stats text

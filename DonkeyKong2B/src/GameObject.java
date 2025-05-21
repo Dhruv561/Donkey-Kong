@@ -15,7 +15,7 @@ public abstract class GameObject {
     private double velocityY = 0;
     private final double TERMINAL_VELOCITY;
     private final double GRAVITY;
-    private final static int OFFSCREEN = -1000;
+    private final static int OFFSCREEN = -1000; // pixel coordinates which are offscreen
 
     /**
      * Initialises game objects position coordinates, sprite and gravity values
@@ -144,9 +144,9 @@ public abstract class GameObject {
      * @param sprite new active sprite
      */
     public void setSprite(Image sprite) {
-        this.sprite = sprite;
-        this.width = sprite.getWidth();
-        this.height = sprite.getHeight();
+        this.sprite = sprite; // update sprite image
+        this.width = sprite.getWidth(); // update sprite width
+        this.height = sprite.getHeight(); // update sprite height
     }
 
     /**
@@ -169,6 +169,7 @@ public abstract class GameObject {
      * Destroys game object and moves it offscreen
      */
     public void destroy() {
+        // mark object as destroyed and move offscreen
         this.isDestroyed = true;
         setCentreX(OFFSCREEN);
         setCentreY(OFFSCREEN);
@@ -195,7 +196,7 @@ public abstract class GameObject {
      */
     public void display() {
         if (!isDestroyed) {
-            sprite.draw(centreX, centreY);
+            sprite.draw(centreX, centreY); // draw sprite at x and y coordinates
         }
     }
 
@@ -205,7 +206,7 @@ public abstract class GameObject {
      * @return boolean whether the objects intersect
      */
     public boolean isTouching(GameObject object) {
-        return getBoundingBox().intersects(object.getBoundingBox());
+        return getBoundingBox().intersects(object.getBoundingBox()); // checks if 2 objects are touching
     }
 
     /**
@@ -214,24 +215,24 @@ public abstract class GameObject {
      * @param platforms array of all platforms
      */
     public void fallToPlatform(Platform[] platforms) {
-        // 1) Apply gravity
+        // apply gravity
         velocityY += GRAVITY;
 
-        // 2) Limit falling speed to terminal velocity
+        // limit falling speed to terminal velocity
         if (velocityY > TERMINAL_VELOCITY) {
             velocityY = TERMINAL_VELOCITY;
         }
 
-        // 3) Move the object downward
+        // move the object downward
         centreY += velocityY;
 
-        // 4) Check for collision with platforms
+        // check for collision with platforms
         for (Platform platform : platforms) {
             if (isTouching(platform)) {
-                // Position the object on top of the platform
+                // position the object on top of the platform
                 centreY = platform.getTopY() - (height / 2);
-                velocityY = 0; // Stop falling
-                break; // Stop checking further once the object lands
+                velocityY = 0; // stop falling
+                break; // stop checking further once the object lands
             }
         }
     }

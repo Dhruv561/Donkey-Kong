@@ -48,7 +48,7 @@ public abstract class Entity extends GameObject {
      * Updates sprite based on the direction its facing
      */
     protected void updateSprite() {
-        setSprite(isRight ? RIGHT_SPRITE : LEFT_SPRITE);
+        setSprite(isRight ? RIGHT_SPRITE : LEFT_SPRITE); // set sprite based off whether facing right or left
     }
 
     /**
@@ -63,15 +63,19 @@ public abstract class Entity extends GameObject {
      */
     public void enforceBoundaries() {
         if (getLeftX() < 0) {
+            // avoid entity moving left of window
             setCentreX(getWidth() / 2);
         }
         if (getRightX() > ShadowDonkeyKong.getScreenWidth()) {
+            // avoid entity moving right of window
             setCentreX(ShadowDonkeyKong.getScreenWidth() - getWidth() / 2);
         }
         if (getTopY() < 0) {
+            // avoid entity moving above window
             setCentreY(getWidth() / 2);
         }
         if (getBottomY() > ShadowDonkeyKong.getScreenHeight()) {
+            // avoid entity moving below window
             setCentreY(ShadowDonkeyKong.getScreenHeight() - getHeight() / 2);
         }
     }
@@ -83,19 +87,19 @@ public abstract class Entity extends GameObject {
      * @return boolean of whether entity is on boundary of window or platform edge
      */
     public boolean atBoundary(Platform[] platforms) {
-        boolean rightEdge = getRightX() >= ShadowDonkeyKong.getScreenWidth();
-        boolean leftEdge = getLeftX() <= 0;
+        boolean rightEdge = getRightX() >= ShadowDonkeyKong.getScreenWidth(); // checks if past right edge of window
+        boolean leftEdge = getLeftX() <= 0; // checks if entity is past left edge of window
 
-        Platform platform = findPlatform(platforms);
-        boolean platformEdge = false;
+        Platform platform = findPlatform(platforms); // tracks platform entity is standing on
+        boolean platformEdge = false; // is entity on platform edge
 
         if (platform != null) {
-            boolean leftPlatformEdge = getLeftX() <= platform.getLeftX();
-            boolean rightPlatformEdge = getRightX() >= platform.getRightX();
-            platformEdge = leftPlatformEdge || rightPlatformEdge;
+            boolean leftPlatformEdge = getLeftX() <= platform.getLeftX(); // checks if on left edge of platform
+            boolean rightPlatformEdge = getRightX() >= platform.getRightX(); // checks if on right edge of platform
+            platformEdge = leftPlatformEdge || rightPlatformEdge; // checks if on platform edge
         }
 
-        return rightEdge || leftEdge || platformEdge;
+        return rightEdge || leftEdge || platformEdge; // returns if on edge of either window or platform
     }
 
     /**
@@ -105,6 +109,7 @@ public abstract class Entity extends GameObject {
      */
     private Platform findPlatform(Platform[] platforms) {
         for (Platform platform : platforms) {
+            // checks if entity's bottom is on platforms top so entity is touching platform
             if (getBottomY() == platform.getTopY()) {
                 return platform;
             }

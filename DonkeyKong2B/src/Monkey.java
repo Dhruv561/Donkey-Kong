@@ -5,9 +5,9 @@ import bagel.Image;
  * rendering, movement and entity interaction for all monkeys.
  */
 public class Monkey extends Entity {
-    private int[] movementPattern;
-    private int currentIdx = 0;
-    private double startingX;
+    private int[] movementPattern; // movement array of pixels
+    private int currentIdx = 0; // current position in movement array
+    private double startingX; // starting position when moving in movement pattern
     private final static double MONKEY_GRAVITY = 0.4;
     private final static double MONKEY_TERMINAL_VELOCITY = 5;
     private final static double MOVEMENT_VELOCITY = 0.5;
@@ -43,7 +43,8 @@ public class Monkey extends Entity {
      */
     public Monkey(double centreX, double centerY, boolean isRight,
                   int[] movementPattern) {
-        super(centreX, centerY, normalMonkeyLeftImage, normalMonkeyRightImage, MONKEY_GRAVITY, MONKEY_TERMINAL_VELOCITY);
+        super(centreX, centerY, normalMonkeyLeftImage, normalMonkeyRightImage, MONKEY_GRAVITY,
+                MONKEY_TERMINAL_VELOCITY);
         setRight(isRight);
         updateSprite();
         this.movementPattern = movementPattern;
@@ -66,15 +67,20 @@ public class Monkey extends Entity {
             return;
         }
 
+        // checks to see if monkey has moved the current distance in the movement pattern
+        // checks to see if monkey has reached window or platform edges
         if (Math.abs(startingX - getCentreX()) >= movementPattern[currentIdx] || atBoundary(platforms)) {
+            // updates the current index to cycle to the next movement pattern
             currentIdx = (currentIdx + 1) % movementPattern.length;
-            startingX = getCentreX();
-            setRight(!isRight());
+            startingX = getCentreX(); // reset starting coordinate for new movement
+            setRight(!isRight()); // change directions
         }
 
         if (isRight()) {
+            // move right
             setCentreX(getCentreX() + MOVEMENT_VELOCITY);
         } else {
+            // move left
             setCentreX(getCentreX() - MOVEMENT_VELOCITY);
         }
     }
@@ -85,8 +91,8 @@ public class Monkey extends Entity {
      */
     public void update(Platform[] platforms) {
         fallToPlatform(platforms);
-        moveHorizontal(platforms);
-        updateSprite();
+        moveHorizontal(platforms); // move horizontally based off movement pattern
+        updateSprite(); // update sprite for direction changes
         display();
     }
 }

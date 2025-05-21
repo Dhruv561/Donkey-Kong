@@ -7,11 +7,11 @@ import java.util.*;
  */
 public class IntelligentMonkey extends Monkey implements Attackable {
     private boolean isDestroyed = false;
-    private int currentFrame = 5;
-    private int lastShot = 0;
+    private int currentFrame = 5; // current time
+    private int lastShot = 0; // time at which last banana was thrown
     private ArrayList<Banana> bananas = new ArrayList<Banana>();
-    private final static int PROJECTILE_COOLDOWN = 5;
-    private final static int OFFSCREEN = -1000;
+    private final static int PROJECTILE_COOLDOWN = 5; // cooldown period before throwing bananas
+    private final static int OFFSCREEN = -1000; // pixel coordinates offscreen
 
     /**
      * Initialises intelligent monkey based off position coordinates, left and right facing sprite of normal monkeys,
@@ -32,9 +32,11 @@ public class IntelligentMonkey extends Monkey implements Attackable {
      */
     @Override
     public void destroy() {
+        // destroy and move monkey offscreen
         this.isDestroyed = true;
         setCentreX(OFFSCREEN);
         setCentreY(OFFSCREEN);
+        //destroy each banana
         for (Banana banana: bananas) {
             banana.destroy();
         }
@@ -53,32 +55,33 @@ public class IntelligentMonkey extends Monkey implements Attackable {
      */
     public void launchProjectile(GameStats stats) {
         if (stats.getRemainingTime(lastShot) - stats.getRemainingTime(currentFrame) >= PROJECTILE_COOLDOWN) {
-            Banana banana = new Banana(getCentreX(), getCentreY(), isRight());
+            // fire banana if time between banana throws exceeds cooldown
+            Banana banana = new Banana(getCentreX(), getCentreY(), isRight()); // create new banana
             bananas.add(banana);
-            lastShot = currentFrame;
+            lastShot = currentFrame; // update time which last banana was thrown
         }
     }
 
     /**
      * Update method which is used to make intelligent monkeys fall to platform, move and render to screen.
      * Also handles banana launching and destroys all bananas if monkey is destroyed.
-     * @param platforms
-     * @param mario
-     * @param stats
+     * @param platforms array of platforms
+     * @param mario mario
+     * @param stats game stats
      */
     public void update(Platform[] platforms, Mario mario, GameStats stats) {
         fallToPlatform(platforms);
-        moveHorizontal(platforms);
+        moveHorizontal(platforms); // move horizontally based off movement pattern
 
-        launchProjectile(stats);
+        launchProjectile(stats); // create and handle banana launching
         for (Banana banana : bananas) {
             if (!banana.isDestroyed()) {
-                banana.update(mario);
+                banana.update(mario); // update state of every banana to handle movement
             }
         }
 
-        updateSprite();
+        updateSprite(); // update if direction has changed left or right
         display();
-        currentFrame++;
+        currentFrame++; // increase current time
     }
 }

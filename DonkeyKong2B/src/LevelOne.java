@@ -19,7 +19,7 @@ public class LevelOne extends GameScreen {
      */
     public LevelOne(Properties gameProps, Properties messageProps) {
         super(gameProps, messageProps);
-        loadLevel();
+        loadLevel(); // initialise all game objects
     }
 
     /**
@@ -28,8 +28,10 @@ public class LevelOne extends GameScreen {
      */
     @Override
     public void loadLevel() {
+        // create mario at appropriate coordinates
         setMario(new Mario(Integer.parseInt(getGAME_PROPS().getProperty("mario.level1").split(",")[0]),
                 Integer.parseInt(getGAME_PROPS().getProperty("mario.level1").split(",")[1])));
+        // create donkey kong at appropriate coordinates
         setDonkeyKong(new DonkeyKong(Integer.parseInt(getGAME_PROPS().getProperty("donkey.level1").split(",")[0]),
                 Integer.parseInt(getGAME_PROPS().getProperty("donkey.level1").split(",")[1])));
         createPlatforms(LEVEL);
@@ -48,32 +50,40 @@ public class LevelOne extends GameScreen {
     
     @Override
     public void checkGameStatus() {
+        // mario touching donkey kong
         if (getMario().isTouching(getDonkeyKong())) {
             if (getMario().hasHammer()) {
+                // mario hits donkey kong with hammer
                 setGameWon(true);
             } else {
+                // mario touching donkey kong without hammer
                 setGameWon(false);
             }
-            setGameOver(true);
+            setGameOver(true); // game is over
         }
 
+        // mario touching barrels
         for (Barrel barrel : getBarrels()) {
             if (getMario().isTouching(barrel)) {
                 if (getMario().hasHammer()) {
-                    getStats().barrelDestroyed();
+                    // barrel destroyed by hammer
+                    getStats().barrelDestroyed(); // increase points
                     barrel.destroy();
                 } else {
-                    setGameWon(false);
-                    setGameOver(true);
+                    // mario touching barrel without hammer
+                    setGameWon(false); // game is lost
+                    setGameOver(true); // game is over
                 }
             }
         }
 
+        // no more remaining time
         if (getStats().getRemainingTime() <= 0) {
-            setGameWon(false);
-            setGameOver(true);
+            setGameWon(false); // game lost
+            setGameOver(true); // game over
         }
 
+        // set points to 0 if game has been lost
         if (getGameOver() && !getGameWon()) {
             getStats().setPoints(0);
         }
@@ -86,35 +96,39 @@ public class LevelOne extends GameScreen {
      */
     @Override
     public void update(Input input) {
-        drawBackground();
+        drawBackground(); // draw black background
+
+        // display platforms
         for (Platform platform : getPlatforms()) {
             platform.display();
         }
 
         for (Barrel barrel: getBarrels()) {
+            // increase points if mario jumping over barrel
             if (getMario().jumpingOverBarrel(barrel) && !barrel.isDestroyed()) {
-                getStats().jumpedOver();
-                getStats().changeBarrelScore(false);
+                getStats().jumpedOver(); // increase points
+                getStats().changeBarrelScore(false); // stop adding further points to avoid double counting
             }
-            barrel.update(getPlatforms());
+            barrel.update(getPlatforms()); // update barrel status
         }
 
         for (Ladder ladder: getLadders()) {
-            ladder.display();
+            ladder.update(getPlatforms()); // update ladder status
         }
 
         for (Hammer hammer : getHammers()) {
-            hammer.display();
+            hammer.display(); // display hammers
         }
 
-        getMario().update(input, getPlatforms(), getLadders(), getHammers());
-        getDonkeyKong().update(getPlatforms());
+        getMario().update(input, getPlatforms(), getLadders(), getHammers()); // update mario status
+        getDonkeyKong().update(getPlatforms()); // update donkey kong status
 
         if (getMario().onPlatform(getPlatforms())) {
+            // allow mario to gain points jumping over barrels now he is on a platform and not midair
             getStats().changeBarrelScore(true);
         }
-        getStats().display();
-        getStats().increaseFrame();
-        checkGameStatus();
+        getStats().display(); // display game stats
+        getStats().increaseFrame(); // increase time played
+        checkGameStatus(); // check if game is over
     }
 }

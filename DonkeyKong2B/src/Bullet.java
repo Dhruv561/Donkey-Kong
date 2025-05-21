@@ -6,13 +6,13 @@ import bagel.*;
  */
 public class Bullet extends GameObject {
     private boolean isRight = false;
-    private double startingX;
+    private double startingX; // original x coordinate when fired
     private final static Image LEFT_SPRITE = new Image("res/bullet_left.png");
     private final static Image RIGHT_SPRITE = new Image("res/bullet_right.png");
     private final static int BULLET_GRAVITY = 0;
     private final static int BULLET_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 3.8;
-    private final static double MAXIMUM_PIXELS = 300;
+    private final static double MAXIMUM_PIXELS = 300; // maximum pixels bullet travels before being destroyed
 
     /**
      * Initialising bullet with position coordinates, direction, sprite and gravity values
@@ -38,24 +38,26 @@ public class Bullet extends GameObject {
     private void monkeyCollision(Monkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
                                  DonkeyKong donkeyKong, GameStats stats) {
         for (Monkey monkey : normalMonkeys) {
+            // bullet destroys normal monkeys when touching
             if (isTouching(monkey)) {
-                monkey.destroy();
-                stats.monkeyDestroyed();
-                destroy();
+                monkey.destroy(); // destroy monkey
+                stats.monkeyDestroyed(); // add points for destroying monkey
+                destroy(); // destroy bullet
             }
         }
 
         for (IntelligentMonkey monkey : intelligentMonkeys) {
+            // bullet destroys intelligent monkeys when touching
             if (isTouching(monkey)) {
-                monkey.destroy();
-                stats.monkeyDestroyed();
-                destroy();
+                monkey.destroy(); // destroy monkey
+                stats.monkeyDestroyed(); // add points for destroying monkey
+                destroy(); // destroy bullet
             }
         }
 
         if (isTouching(donkeyKong)) {
-            donkeyKong.hit();
-            destroy();
+            donkeyKong.hit(); // donkey kong been hit by bullet
+            destroy(); // destroy bullet
         }
     }
 
@@ -72,23 +74,27 @@ public class Bullet extends GameObject {
     public void update(Platform[] platforms, Monkey[] normalMonkeys, IntelligentMonkey[] intelligentMonkeys,
                        DonkeyKong donkeyKong, GameStats stats) {
         if (Math.abs(startingX - getCentreX()) >= MAXIMUM_PIXELS) {
+            // bullet has travelled more than maximum pixel distance
             destroy();
         } else {
             if (isRight) {
+                // move right
                 setCentreX(getCentreX() + MOVEMENT_VELOCITY);
             } else {
+                // move left
                 setCentreX(getCentreX() - MOVEMENT_VELOCITY);
             }
         }
         if (getCentreX() >= ShadowDonkeyKong.getScreenWidth() || getCentreX() <= 0) {
+            // destroy bullet if offscreen
             destroy();
         }
         for (Platform platform : platforms) {
             if (isTouching(platform)) {
-                destroy();
+                destroy(); // destroy bullet if touching platform
             }
         }
-        monkeyCollision(normalMonkeys, intelligentMonkeys, donkeyKong, stats);
+        monkeyCollision(normalMonkeys, intelligentMonkeys, donkeyKong, stats); // check for monkey collisions
         display();
     }
 }

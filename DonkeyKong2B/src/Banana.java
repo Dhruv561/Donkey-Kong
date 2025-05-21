@@ -6,11 +6,11 @@ import bagel.*;
  */
 public class Banana extends GameObject {
     private boolean isRight;
-    private final double startingX;
+    private final double startingX; // original position banana is thrown from
     private final static int BANANA_GRAVITY = 0;
     private final static int BANANA_TERMINAL_VELOCITY = 0;
     private final static double MOVEMENT_VELOCITY = 1.8;
-    private final static int MAXIMUM_PIXELS = 300;
+    private final static int MAXIMUM_PIXELS = 300; // maximum pixels banana can travel before being destroyed
 
     /**
      * Initialising banana with position coordinates, direction, sprite and gravity values
@@ -46,15 +46,19 @@ public class Banana extends GameObject {
             return;
         }
         if (isRight) {
+            // move right
             setCentreX(getCentreX() + MOVEMENT_VELOCITY);
         } else {
+            //move left
             setCentreX(getCentreX() - MOVEMENT_VELOCITY);
         }
         if (isTouching(mario)) {
+            // banana has hit mario
             mario.hit();
             destroy();
         }
         if (Math.abs(getCentreX() - startingX) >= MAXIMUM_PIXELS) {
+            // banana has moved beyond maximum pixels and needs to be destroyed
             destroy();
         }
         display();

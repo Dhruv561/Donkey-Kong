@@ -25,7 +25,7 @@ public class DonkeyKong extends Entity {
      * If donkey kong is hit by bullet lower health
      */
     public void hit() {
-        this.health -= 1;
+        this.health -= 1; // reduce health
     }
 
     /**
