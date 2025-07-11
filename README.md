@@ -1,4 +1,5 @@
-Donkey Kong Project 2B README
+Donkey Kong Project README
+Built using Bagel game engine and OOP principles in Java
 
 Assumptions:
 - If either enter or 1 is pressed, user is put into level 1.
